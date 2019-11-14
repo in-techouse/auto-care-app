@@ -31,5 +31,3 @@ dependencies {
     implementation 'com.android.support:support-v4:29.0.0'
 
 }
-
-
