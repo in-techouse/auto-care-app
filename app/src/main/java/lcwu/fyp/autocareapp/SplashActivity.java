@@ -2,13 +2,14 @@ package lcwu.fyp.autocareapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends Activity {
     private boolean isFirstAnimation = false;
 
     @Override
