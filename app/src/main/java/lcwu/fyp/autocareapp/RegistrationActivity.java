@@ -32,7 +32,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 String strFirstname=edtFirstName.getText().toString();
                 String strLastName=edtLastName.getText().toString();
                 String strPhoneNo=edtPhoneNo.getText().toString();
-            if(strFirstname.length()<6)
+            if(strFirstname.length()<3)
             {
                 edtFirstName.setError("invalid");
             }
@@ -40,7 +40,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             {
                 edtFirstName.setError(null);
             }
-                if(strLastName.length()<6)
+                if(strLastName.length()<3)
                 {
                     edtLastName.setError("invalid");
                 }
