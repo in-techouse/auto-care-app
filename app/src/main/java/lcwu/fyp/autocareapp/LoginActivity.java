@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -63,22 +64,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     edtPhoneNo.setError("INVALID");
                 }
                 else{
+                    Log.e("LOGIN", "Else part");
                     edtPhoneNo.setError(null);
                     FirebaseAuth auth = FirebaseAuth.getInstance();
                     PhoneAuthProvider provider = PhoneAuthProvider.getInstance();
                     PhoneAuthProvider.OnVerificationStateChangedCallbacks callBack;
                     callBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                         @Override
-                        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                            super.onCodeSent(s, forceResendingToken);
+                            Log.e("LOGIN", "Code Sent, Verification Id: " + s);
+                        }
 
+                        @Override
+                        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                            Log.e("LOGIN", "Verification Completed");
                         }
 
                         @Override
                         public void onVerificationFailed(@NonNull FirebaseException e) {
-
+                            Log.e("LOGIN", "Verification Failed: " + e.getMessage());
                         }
                     };
-                    provider.verifyPhoneNumber(strPhoneNo, 180, TimeUnit.SECONDS, this, callBack);
+                    provider.verifyPhoneNumber(strPhoneNo, 120, TimeUnit.SECONDS, this, callBack);
+                    Log.e("LOGIN", "Code Sent");
                 }
                 break;
 
