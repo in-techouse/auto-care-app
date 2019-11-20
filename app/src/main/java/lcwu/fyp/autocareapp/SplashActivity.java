@@ -1,7 +1,5 @@
 package lcwu.fyp.autocareapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
