@@ -1,5 +1,6 @@
 package lcwu.fyp.autocareapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,9 +12,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import java.util.concurrent.TimeUnit;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-     TextView gotologin;
+     TextView goToRegistration;
      EditText edtPhoneNo;
+     Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,36 +44,46 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-          edtPhoneNo=findViewById(R.id.edtPhoneNo);
-          gotologin=findViewById(R.id.gotologin);
+        edtPhoneNo = findViewById(R.id.edtPhoneNo);
+        goToRegistration = findViewById(R.id.goToRegistration);
+        btnLogin = findViewById(R.id.btnLogin);
 
 
-          gotologin.setOnClickListener(this);
-
-
+        goToRegistration.setOnClickListener(this);
+        btnLogin.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         int id =v.getId();
-        switch (id)
-        {
-            case R.id.btnRegister:{
-                String strPhoneNo=edtPhoneNo.getText().toString();
-
-                if(strPhoneNo.length()!=11)
-                {
+        switch (id){
+            case R.id.btnLogin:{
+                String strPhoneNo = edtPhoneNo.getText().toString();
+                if(strPhoneNo.length()!= 13){
                     edtPhoneNo.setError("INVALID");
                 }
-                else
-                    {
+                else{
                     edtPhoneNo.setError(null);
-                    }
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    PhoneAuthProvider provider = PhoneAuthProvider.getInstance();
+                    PhoneAuthProvider.OnVerificationStateChangedCallbacks callBack;
+                    callBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                        @Override
+                        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+
+                        }
+
+                        @Override
+                        public void onVerificationFailed(@NonNull FirebaseException e) {
+
+                        }
+                    };
+                    provider.verifyPhoneNumber(strPhoneNo, 180, TimeUnit.SECONDS, this, callBack);
+                }
                 break;
 
             }
-            case R.id.gotologin:
-                {
+            case R.id.goToRegistration:{
                 Intent it = new Intent(LoginActivity.this, RegistrationActivity.class);
                 startActivity(it);
                 break;

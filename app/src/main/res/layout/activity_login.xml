@@ -35,27 +35,23 @@
             android:paddingRight="@dimen/login_layout_padding"
             android:paddingTop="@dimen/login_layout_padding_top"
             android:weightSum="1">
-<com.google.android.material.textfield.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <EditText
-        android:inputType="phone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimaryDark"
-        android:padding="12dp"
-        android:layout_margin="12dp"
-        android:hint="@string/phone_no"
-        />
-
-
-</com.google.android.material.textfield.TextInputLayout>
-
-
-
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/btnRegister"
+                    android:text="+92"
+                    android:inputType="phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:padding="12dp"
+                    android:layout_margin="12dp"
+                    android:hint="@string/phone_no" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
+                android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -65,15 +61,13 @@
                 android:textColor="@color/dark_gray"
                 android:text="Log in"/>
             <TextView
-                android:id="@+id/gotologin"
+                android:id="@+id/goToRegistration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
                 android:layout_margin="12dp"
                 android:textAlignment="center"
-                android:text="Don't have account goto registration screen "
-
-            />
+                android:text="Don't have account goto registration screen" />
 
 
         </LinearLayout>
