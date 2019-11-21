@@ -115,6 +115,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 loginProgress.setVisibility(View.GONE);
                 btnLogin.setVisibility(View.VISIBLE);
                 Log.e("LOGIN", "Code Sent, Verification Id: " + s);
+                Intent it = new Intent(LoginActivity.this, OTPVerification.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("verificationId", s); // Because it's primitive data type
+                bundle.putParcelable("resendToken", forceResendingToken); // Because it's non-primitive data type
+                it.putExtras(bundle);
+                startActivity(it);
+
+
             }
 
             @Override
