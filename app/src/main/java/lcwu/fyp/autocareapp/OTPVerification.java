@@ -17,9 +17,6 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otpverification);
 
-       btnverify = findViewById(R.id.btnverify);
-       btnverify.setOnClickListener(this);
-
         Intent it = getIntent();
         if(it == null){
             finish();
@@ -37,14 +34,21 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
         PhoneAuthProvider.ForceResendingToken resendToken = (PhoneAuthProvider.ForceResendingToken) bundle.getParcelable("resendToken");
 
 
+        btnverify = findViewById(R.id.btnverify);
+        btnverify.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
+        switch (id){
+            case R.id.btnverify:{
 
+                break;
+            }
         }
-
-
     }
+
+
+}
