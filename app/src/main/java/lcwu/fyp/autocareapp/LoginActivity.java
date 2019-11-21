@@ -15,19 +15,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-
 import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-     TextView goToRegistration;
-     EditText edtPhoneNo;
-     Button btnLogin;
-     ProgressBar loginProgress;
+    private TextView goToRegistration;
+    private EditText edtPhoneNo;
+    private Button btnLogin;
+    private ProgressBar loginProgress;
+    private String strPhoneNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         int id =v.getId();
         switch (id){
             case R.id.btnLogin:{
-                final String strPhoneNo = edtPhoneNo.getText().toString();
+                strPhoneNo = edtPhoneNo.getText().toString();
                 if(strPhoneNo.length()!= 13){
                     edtPhoneNo.setError("Enter valid phone number");
                 }
@@ -77,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    verifyUser(strPhoneNo);
+                                    verifyUser();
                                 }
                             }).setNegativeButton("No, edit number", new DialogInterface.OnClickListener() {
                                 @Override
@@ -100,7 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void verifyUser(String strPhoneNo){
+    private void verifyUser(){
         Log.e("LOGIN", "Else part");
         loginProgress.setVisibility(View.VISIBLE);
         btnLogin.setVisibility(View.GONE);
@@ -116,17 +114,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.e("LOGIN", "Code Sent, Verification Id: " + s);
                 Intent it = new Intent(LoginActivity.this, OTPVerification.class);
                 Bundle bundle = new Bundle();
+                bundle.putString("phone", strPhoneNo);
                 bundle.putString("verificationId", s); // Because it's primitive data type
                 bundle.putParcelable("resendToken", forceResendingToken); // Because it's non-primitive data type
                 it.putExtras(bundle);
                 startActivity(it);
-
-
             }
 
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                 Log.e("LOGIN", "Verification Completed");
+                Intent it = new Intent(LoginActivity.this, OTPVerification.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("phoneAuthCredential", phoneAuthCredential); // Because it's non-primitive data type
+                it.putExtras(bundle);
+                startActivity(it);
             }
 
             @Override
