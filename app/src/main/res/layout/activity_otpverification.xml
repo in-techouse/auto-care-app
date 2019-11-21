@@ -50,14 +50,22 @@
             app:viewType="rectangle" />
 
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Verify"
-        android:textColor="@color/colorPrimary"
-        android:id="@+id/btnverify"
-        android:padding="12dp"
-        android:layout_margin="40dp"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Verify"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/btnverify"
+            android:padding="12dp"
+            android:layout_margin="40dp"/>
+
+        <ProgressBar
+            android:visibility="gone"
+            android:layout_margin="40dp"
+            android:layout_gravity="center"
+            android:id="@+id/verifyProgress"
+            android:layout_width="35dp"
+            android:layout_height="35dp"/>
 
     </LinearLayout>
 

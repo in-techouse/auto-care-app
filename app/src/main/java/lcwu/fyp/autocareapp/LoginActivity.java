@@ -105,7 +105,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginProgress.setVisibility(View.VISIBLE);
         btnLogin.setVisibility(View.GONE);
         edtPhoneNo.setError(null);
-        FirebaseAuth auth = FirebaseAuth.getInstance();
         PhoneAuthProvider provider = PhoneAuthProvider.getInstance();
         PhoneAuthProvider.OnVerificationStateChangedCallbacks callBack;
         callBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {

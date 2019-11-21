@@ -1,17 +1,31 @@
 package lcwu.fyp.autocareapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.Toast;
 
+import com.chaos.view.PinView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 public class OTPVerification extends AppCompatActivity implements View.OnClickListener {
-    Button btnverify;
+    Button btnVerify;
+    PinView firstPinView;
+    ProgressBar verifyProgress;
+    String verificationId;
+    PhoneAuthProvider.ForceResendingToken resendToken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,13 +43,16 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
         }
 
         // For primitive data type
-        String verificationId = bundle.getString("verificationId");
+        verificationId = bundle.getString("verificationId");
         // For non-primitive data type
-        PhoneAuthProvider.ForceResendingToken resendToken = (PhoneAuthProvider.ForceResendingToken) bundle.getParcelable("resendToken");
+        resendToken = (PhoneAuthProvider.ForceResendingToken) bundle.getParcelable("resendToken");
 
 
-        btnverify = findViewById(R.id.btnverify);
-        btnverify.setOnClickListener(this);
+        btnVerify = findViewById(R.id.btnverify);
+        firstPinView = findViewById(R.id.firstPinView);
+        verifyProgress = findViewById(R.id.verifyProgress);
+
+        btnVerify.setOnClickListener(this);
 
     }
 
@@ -44,6 +61,36 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
         int id = view.getId();
         switch (id){
             case R.id.btnverify:{
+                String otp = firstPinView.getText().toString();
+                if(otp.length() != 6){
+                    firstPinView.setError("Enter a valid OTP code");
+                }
+                else{
+                    firstPinView.setError(null);
+
+                    verifyProgress.setVisibility(View.VISIBLE);
+                    btnVerify.setVisibility(View.GONE);
+
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, otp);
+
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    auth.signInWithCredential(credential)
+                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                            @Override
+                            public void onSuccess(AuthResult authResult) {
+                                verifyProgress.setVisibility(View.GONE);
+                                btnVerify.setVisibility(View.VISIBLE);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                verifyProgress.setVisibility(View.GONE);
+                                btnVerify.setVisibility(View.VISIBLE);
+                            }
+                        });
+
+                }
 
                 break;
             }
