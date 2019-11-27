@@ -21,6 +21,8 @@ import android.widget.TextView;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.shreyaspatil.MaterialDialog.MaterialDialog;
+
 import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -66,6 +68,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btnLogin:{
                 boolean flag =isConnected();
                 if (!flag){
+                    MaterialDialog dialog = new MaterialDialog.Builder(LoginActivity.this)
+                            .setTitle("Delete?")
+                            .setMessage("Are you sure want to delete this file?")
+                            .setCancelable(false)
+                            .setPositiveButton("Delete", R.drawable.ic_delete, new MaterialDialog.OnClickListener() {
+                                @Override
+                                public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", R.drawable.ic_close, new MaterialDialog.OnClickListener() {
+                                @Override
+                                public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
+
+                                }
+                            })
+                            .build();
+                    // Show Dialog
+                    dialog.show();
                     return;
                 }
                 strPhoneNo = edtPhoneNo.getText().toString();
