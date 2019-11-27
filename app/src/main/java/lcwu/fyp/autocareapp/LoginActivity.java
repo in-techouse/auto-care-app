@@ -3,8 +3,12 @@ package lcwu.fyp.autocareapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -60,6 +64,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         int id =v.getId();
         switch (id){
             case R.id.btnLogin:{
+                boolean flag =isConnected();
+                if (!flag){
+                    return;
+                }
                 strPhoneNo = edtPhoneNo.getText().toString();
                 if(strPhoneNo.length()!= 13){
                     edtPhoneNo.setError("Enter valid phone number");
@@ -138,4 +146,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         provider.verifyPhoneNumber(strPhoneNo, 120, TimeUnit.SECONDS, this, callBack);
         Log.e("LOGIN", "Code Sent");
     }
+    private boolean isConnected() {
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED || connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED)
+            connected = true;
+        else
+            connected = false;
+        return  connected;
+    }
+
 }
