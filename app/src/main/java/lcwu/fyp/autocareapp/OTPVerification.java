@@ -2,7 +2,6 @@ package lcwu.fyp.autocareapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -10,10 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.chaos.view.PinView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,7 +18,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-
 import java.util.concurrent.TimeUnit;
 
 public class OTPVerification extends AppCompatActivity implements View.OnClickListener {
@@ -154,7 +149,7 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
 
                     }
                 };
-                PhoneAuthProvider.getInstance().verifyPhoneNumber(strPhoneNo, 60, TimeUnit.SECONDS, this, callBack, resendToken);
+                PhoneAuthProvider.getInstance().verifyPhoneNumber(strPhoneNo, 120, TimeUnit.SECONDS, this, callBack, resendToken);
                 break;
             }
         }
