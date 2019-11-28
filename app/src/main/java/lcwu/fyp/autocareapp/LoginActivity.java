@@ -25,6 +25,7 @@ import com.shreyaspatil.MaterialDialog.MaterialDialog;
 
 import java.util.concurrent.TimeUnit;
 
+import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 strPhoneNo = edtPhoneNo.getText().toString();
                 if(strPhoneNo.length()!= 13){
-                    edtPhoneNo.setError("Enter valid phone number");
+                    edtPhoneNo.setError(Constants.ERROR_PHONE);
                 }
                 else{
 
