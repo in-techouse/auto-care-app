@@ -25,7 +25,10 @@ import com.shreyaspatil.MaterialDialog.MaterialDialog;
 
 import java.util.concurrent.TimeUnit;
 
+import lcwu.fyp.autocareapp.director.Helpers;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private Helpers helpers;
     private TextView goToRegistration;
     private EditText edtPhoneNo;
     private Button btnLogin;
@@ -37,6 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        helpers = new Helpers();
 
         /*
         This activity is created and opened when SplashScreen finishes its animations.
@@ -66,27 +70,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         int id =v.getId();
         switch (id){
             case R.id.btnLogin:{
-                boolean flag =isConnected();
+                boolean flag = helpers.isConnected(this);
                 if (!flag){
-                    MaterialDialog dialog = new MaterialDialog.Builder(LoginActivity.this)
-                            .setTitle("Delete?")
-                            .setMessage("Are you sure want to delete this file?")
-                            .setCancelable(false)
-                            .setPositiveButton("Delete", R.drawable.ic_delete, new MaterialDialog.OnClickListener() {
-                                @Override
-                                public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
-
-                                }
-                            })
-                            .setNegativeButton("Cancel", R.drawable.ic_close, new MaterialDialog.OnClickListener() {
-                                @Override
-                                public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
-
-                                }
-                            })
-                            .build();
-                    // Show Dialog
-                    dialog.show();
+                    helpers.showNoInternetError(LoginActivity.this);
                     return;
                 }
                 strPhoneNo = edtPhoneNo.getText().toString();
@@ -167,14 +153,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         provider.verifyPhoneNumber(strPhoneNo, 120, TimeUnit.SECONDS, this, callBack);
         Log.e("LOGIN", "Code Sent");
     }
-    private boolean isConnected() {
-        boolean connected = false;
-        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED || connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED)
-            connected = true;
-        else
-            connected = false;
-        return  connected;
-    }
+
+
 
 }
