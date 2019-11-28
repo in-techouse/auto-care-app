@@ -20,7 +20,10 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import java.util.concurrent.TimeUnit;
 
+import lcwu.fyp.autocareapp.director.Helpers;
+
 public class OTPVerification extends AppCompatActivity implements View.OnClickListener {
+    private Helpers helpers;
     Button btnVerify;
     PinView firstPinView;
     ProgressBar verifyProgress;
@@ -34,7 +37,7 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otpverification);
-
+        helpers = new Helpers();
         Intent it = getIntent();
         if(it == null){
             finish();
@@ -103,6 +106,11 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
         int id = view.getId();
         switch (id){
             case R.id.btnverify:{
+                boolean flag = helpers.isConnected(this);
+                if (!flag){
+                    helpers.showNoInternetError(OTPVerification.this);
+                    return;
+                }
                 if(firstPinView == null || firstPinView.getText() == null){
                     return;
                 }
