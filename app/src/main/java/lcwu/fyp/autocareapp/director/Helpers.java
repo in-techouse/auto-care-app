@@ -27,7 +27,7 @@ public class Helpers {
                 .setTitle("ERROR!")
                 .setMessage("No internet connection found.\nConnect to a network and try again.")
                 .setCancelable(false)
-                .setPositiveButton("Okay", R.drawable.ic_delete, new MaterialDialog.OnClickListener() {
+                .setPositiveButton("Okay", R.drawable.ic_okay, new MaterialDialog.OnClickListener() {
                     @Override
                     public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
                         dialogInterface.dismiss();
