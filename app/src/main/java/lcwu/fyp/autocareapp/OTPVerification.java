@@ -20,6 +20,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import java.util.concurrent.TimeUnit;
 
+import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
 
 public class OTPVerification extends AppCompatActivity implements View.OnClickListener {
@@ -116,7 +117,7 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
                 }
                 String otp = firstPinView.getText().toString();
                 if(otp.length() != 6){
-                    firstPinView.setError("Enter a valid OTP code");
+                    firstPinView.setError(Constants.ERROR_INVALID_OTP);
                 }
                 else{
                     firstPinView.setError(null);
