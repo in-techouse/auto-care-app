@@ -24,16 +24,16 @@ public class Helpers {
 
     public void showNoInternetError(Activity activity){
         final MaterialDialog dialog = new MaterialDialog.Builder(activity)
-                .setTitle("ERROR!")
-                .setMessage("No internet connection found.\nConnect to a network and try again.")
+                .setTitle(Constants.ERROR)
+                .setMessage(Constants.ERROR_NO_INTERNET)
                 .setCancelable(false)
-                .setPositiveButton("Okay", R.drawable.ic_okay, new MaterialDialog.OnClickListener() {
+                .setPositiveButton(Constants.MESSAGES_OKAY, R.drawable.ic_okay, new MaterialDialog.OnClickListener() {
                     @Override
                     public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
                         dialogInterface.dismiss();
                     }
                 })
-                .setNegativeButton("Close", R.drawable.ic_close, new MaterialDialog.OnClickListener() {
+                .setNegativeButton(Constants.MESSAGE_CLOSE, R.drawable.ic_close, new MaterialDialog.OnClickListener() {
                     @Override
                     public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
                         dialogInterface.dismiss();
