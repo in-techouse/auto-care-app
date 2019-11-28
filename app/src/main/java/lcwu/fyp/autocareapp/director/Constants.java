@@ -11,6 +11,9 @@ public class Constants {
 
 
     // MESSAGES
+    public static final String MESSAGES_PHONE_CORRECT = "Is the phone number correct?";
+    public static final String MESSAGES_YES = "Yes";
+    public static final String MESSAGES_NO_EDIT = "No, edit number";
 
 
 

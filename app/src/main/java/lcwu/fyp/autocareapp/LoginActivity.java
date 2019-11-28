@@ -85,14 +85,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
                             .setTitle(strPhoneNo)
-                            .setMessage("Is the phone number correct?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            .setMessage(Constants.MESSAGES_PHONE_CORRECT)
+                            .setPositiveButton(Constants.MESSAGES_YES, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                     verifyUser();
                                 }
-                            }).setNegativeButton("No, edit number", new DialogInterface.OnClickListener() {
+                            }).setNegativeButton(Constants.MESSAGES_NO_EDIT, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
