@@ -12,23 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity
-            android:name=".UserProfile"
-            android:label="@string/title_activity_user_profile"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".Dashboard"
-            android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".SplashActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="stateHidden" />
@@ -36,6 +29,18 @@
             android:name=".OTPVerification"
             android:parentActivityName=".LoginActivity"
             android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".UserProfile"
+            android:label="@string/title_activity_user_profile"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"/>
+
+        <activity
+            android:name=".Dashboard"
+            android:label="@string/title_activity_dashboard"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>
