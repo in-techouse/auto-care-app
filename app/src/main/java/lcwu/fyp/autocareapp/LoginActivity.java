@@ -30,7 +30,6 @@ import lcwu.fyp.autocareapp.director.Helpers;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Helpers helpers;
-    private TextView goToRegistration;
     private EditText edtPhoneNo;
     private Button btnLogin;
     private ProgressBar loginProgress;
@@ -57,12 +56,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         edtPhoneNo = findViewById(R.id.edtPhoneNo);
-        goToRegistration = findViewById(R.id.goToRegistration);
         btnLogin = findViewById(R.id.btnLogin);
         loginProgress = findViewById(R.id.loginProgress);
 
 
-        goToRegistration.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
     }
 
