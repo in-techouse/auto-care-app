@@ -174,6 +174,11 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
                     public void onSuccess(AuthResult authResult) {
                         verifyProgress.setVisibility(View.GONE);
                         btnVerify.setVisibility(View.VISIBLE);
+                        Intent intent = new Intent(OTPVerification.this,UserProfile.class);
+                        startActivity(intent);
+                        finish();
+
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

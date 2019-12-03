@@ -46,9 +46,8 @@
     <dimen name="textsixe23">23sp</dimen>
     <dimen name="textsixe24">24sp</dimen>
     <dimen name="textsixe25">25sp</dimen>
-
-
-
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 
 </resources>

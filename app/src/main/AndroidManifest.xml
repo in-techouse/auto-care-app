@@ -13,6 +13,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".UserProfile"
+            android:label="@string/title_activity_user_profile"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".Dashboard"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -30,8 +34,8 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".OTPVerification"
-            android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".LoginActivity"/>
+            android:parentActivityName=".LoginActivity"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>
