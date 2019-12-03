@@ -74,15 +74,6 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"/>
 
-                <TextView
-                    android:id="@+id/goToRegistration"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:layout_margin="12dp"
-                    android:textAlignment="center"
-                    android:text="Don't have account goto registration screen" />
-
 
             </LinearLayout>
 

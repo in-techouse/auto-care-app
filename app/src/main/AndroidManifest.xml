@@ -28,7 +28,6 @@
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".RegistrationActivity" />
         <activity
             android:name=".OTPVerification"
             android:windowSoftInputMode="stateHidden"
