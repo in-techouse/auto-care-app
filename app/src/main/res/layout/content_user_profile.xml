@@ -15,12 +15,12 @@
         android:layout_margin="@dimen/mp12"
         android:padding="@dimen/mp16">
 
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/edtPhoneNo"
-                android:text="+92"
                 android:inputType="phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,6 +29,69 @@
                 android:layout_margin="@dimen/mp12"
                 android:hint="@string/phone_no"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edtFirstName"
+                android:inputType="textPersonName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:padding="@dimen/mp12"
+                android:layout_margin="@dimen/mp12"
+                android:hint="@string/first_name"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edtLastName"
+                android:inputType="textPersonName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:padding="@dimen/mp12"
+                android:layout_margin="@dimen/mp12"
+                android:hint="@string/last_name"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edtEmail"
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:padding="@dimen/mp12"
+                android:layout_margin="@dimen/mp12"
+                android:hint="@string/email"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/userprofile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/login_button_margin"
+            android:layout_marginRight="@dimen/login_button_margin"
+            android:layout_marginTop="@dimen/login_button_margin"
+            android:textColor="@color/dark_gray"
+            android:text="@string/save"/>
+
+        <ProgressBar
+            android:id="@+id/UserProfileProgress"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/mp12"
+            android:layout_marginBottom="@dimen/mp12"
+            android:layout_width="@dimen/mp32"
+            android:layout_height="@dimen/mp32"/>
+
 
     </LinearLayout>
 
