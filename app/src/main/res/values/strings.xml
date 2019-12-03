@@ -14,5 +14,6 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
-    <string name="phone_no">Phone_no</string>
+    <string name="phone_no">Phone Number</string>
+    <string name="Log_in">Log In</string>
 </resources>
