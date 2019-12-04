@@ -193,7 +193,6 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
 
     private void checkUser(){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-
         db.getReference().child("Users").child(strPhoneNo).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
