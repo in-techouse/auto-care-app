@@ -7,7 +7,7 @@ public class Constants {
     public static final String ERROR_NO_INTERNET ="No internet connection found.\nConnect to a network and try again.";
     public static final String ERROR = "ERROR!";
     public static final String ERROR_INVALID_OTP = "Enter valid OTP.";
-
+    public static final String ERROR_SOMETHING_WENT_WRONG = "Something went wrong.\nPlease try again later.";
 
     //SUCCESS MESSAGES
 

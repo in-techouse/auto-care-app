@@ -18,6 +18,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.concurrent.TimeUnit;
 
 import lcwu.fyp.autocareapp.director.Constants;
@@ -172,13 +177,7 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        verifyProgress.setVisibility(View.GONE);
-                        btnVerify.setVisibility(View.VISIBLE);
-                        Intent intent = new Intent(OTPVerification.this,UserProfile.class);
-                        startActivity(intent);
-                        finish();
-
-
+                        checkUser();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -186,8 +185,37 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
                     public void onFailure(@NonNull Exception e) {
                         verifyProgress.setVisibility(View.GONE);
                         btnVerify.setVisibility(View.VISIBLE);
+                        helpers.showError(OTPVerification.this, e.getMessage());
                     }
                 });
+    }
+
+
+    private void checkUser(){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        db.getReference().child("Users").child(strPhoneNo).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                verifyProgress.setVisibility(View.GONE);
+                btnVerify.setVisibility(View.VISIBLE);
+                if(dataSnapshot.getValue() == null){
+                    Intent intent = new Intent(OTPVerification.this, UserProfile.class);
+                    startActivity(intent);
+                }
+                else{
+                    Intent intent = new Intent(OTPVerification.this, Dashboard.class);
+                    startActivity(intent);
+                }
+                finish();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                verifyProgress.setVisibility(View.GONE);
+                btnVerify.setVisibility(View.VISIBLE);
+                helpers.showError(OTPVerification.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            }
+        });
     }
 
 }

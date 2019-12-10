@@ -42,6 +42,28 @@ public class Helpers {
                 .build();
         // Show Dialog
         dialog.show();
+    }
+
+    public void showError(Activity activity, String message){
+        final MaterialDialog dialog = new MaterialDialog.Builder(activity)
+                .setTitle(Constants.ERROR)
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(Constants.MESSAGES_OKAY, R.drawable.ic_okay, new MaterialDialog.OnClickListener() {
+                    @Override
+                    public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton(Constants.MESSAGE_CLOSE, R.drawable.ic_close, new MaterialDialog.OnClickListener() {
+                    @Override
+                    public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .build();
+        // Show Dialog
+        dialog.show();
 
     }
 }
