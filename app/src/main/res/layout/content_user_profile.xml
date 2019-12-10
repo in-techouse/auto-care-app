@@ -15,7 +15,6 @@
         android:layout_margin="@dimen/mp12"
         android:padding="@dimen/mp16">
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -91,7 +90,6 @@
             android:layout_marginBottom="@dimen/mp12"
             android:layout_width="@dimen/mp32"
             android:layout_height="@dimen/mp32"/>
-
 
     </LinearLayout>
 
