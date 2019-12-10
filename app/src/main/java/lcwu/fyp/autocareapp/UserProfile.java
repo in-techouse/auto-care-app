@@ -5,11 +5,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
 
@@ -47,8 +47,6 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
         userProfile.setOnClickListener(this);
 
         edtPhoneNo.setEnabled(false);
-
-
     }
 
     @Override
@@ -89,7 +87,7 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
         else{
             edtLastName.setError(null);
         }
-        if(strEmail.length() < 7){
+        if (strEmail.length() < 7 || !Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()){
             edtEmail.setError(Constants.ERROR_FIRST_NAME);
             flag = false;
         }
