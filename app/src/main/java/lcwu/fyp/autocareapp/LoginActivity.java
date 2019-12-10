@@ -3,12 +3,8 @@ package lcwu.fyp.autocareapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,14 +13,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.shreyaspatil.MaterialDialog.MaterialDialog;
-
 import java.util.concurrent.TimeUnit;
-
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
 
