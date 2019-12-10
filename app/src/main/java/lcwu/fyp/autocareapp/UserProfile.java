@@ -1,5 +1,6 @@
 package lcwu.fyp.autocareapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,6 +25,22 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+
+        Intent intent = getIntent();
+        if(intent == null){
+            finish();
+            return;
+        }
+
+        Bundle bundle = intent.getExtras();
+        if(bundle == null){
+            finish();
+            return;
+        }
+
+        strPhoneNo = bundle.getString("phone");
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -46,6 +63,7 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
         userProfile = findViewById(R.id.userProfile);
         userProfile.setOnClickListener(this);
 
+        edtPhoneNo.setText(strPhoneNo);
         edtPhoneNo.setEnabled(false);
     }
 
@@ -56,6 +74,7 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
             case R.id.userProfile:{
                 if(!helpers.isConnected(UserProfile.this)){
                     helpers.showNoInternetError(UserProfile.this);
+                    return;
                 }
 
                 boolean flag = isValid();
