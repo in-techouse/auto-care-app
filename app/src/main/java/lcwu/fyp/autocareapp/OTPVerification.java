@@ -200,6 +200,9 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
                 btnVerify.setVisibility(View.VISIBLE);
                 if(dataSnapshot.getValue() == null){
                     Intent intent = new Intent(OTPVerification.this, UserProfile.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("phone", strPhoneNo);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                 }
                 else{
