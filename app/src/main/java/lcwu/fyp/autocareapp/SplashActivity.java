@@ -7,6 +7,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import lcwu.fyp.autocareapp.director.Session;
+import lcwu.fyp.autocareapp.model.User;
+
 public class SplashActivity extends Activity {
     private boolean isFirstAnimation = false;
 
@@ -34,8 +37,16 @@ public class SplashActivity extends Activity {
             public void onAnimationEnd(Animation animation) {
                 if (!isFirstAnimation) {
                     imageView.clearAnimation();
-                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                    startActivity(intent);
+                    Session session = new Session(SplashActivity.this);
+                    User user = session.getUser();
+                    if(user == null){
+                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+                    else{
+                        Intent intent = new Intent(SplashActivity.this, Dashboard.class);
+                        startActivity(intent);
+                    }
                     finish();
                 }
 

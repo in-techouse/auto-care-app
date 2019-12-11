@@ -20,6 +20,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.concurrent.TimeUnit;
@@ -195,9 +196,11 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
 
     private void checkUser(){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-        db.getReference().child("Users").child(strPhoneNo).addValueEventListener(new ValueEventListener() {
+        final DatabaseReference reference = db.getReference().child("Users").child(strPhoneNo);
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                reference.removeEventListener(this);
                 verifyProgress.setVisibility(View.GONE);
                 btnVerify.setVisibility(View.VISIBLE);
                 if(dataSnapshot.getValue() == null){
@@ -219,6 +222,7 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                reference.removeEventListener(this);
                 verifyProgress.setVisibility(View.GONE);
                 btnVerify.setVisibility(View.VISIBLE);
                 helpers.showError(OTPVerification.this, Constants.ERROR_SOMETHING_WENT_WRONG);
