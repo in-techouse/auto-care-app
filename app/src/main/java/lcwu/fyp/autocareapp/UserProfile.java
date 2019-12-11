@@ -2,10 +2,14 @@ package lcwu.fyp.autocareapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.FirebaseDatabase;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Patterns;
@@ -15,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
+import lcwu.fyp.autocareapp.director.Session;
 import lcwu.fyp.autocareapp.model.User;
 
 public class UserProfile extends AppCompatActivity implements View.OnClickListener{
@@ -83,13 +88,28 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
 
                 boolean flag = isValid();
                 if(flag){
-                    User user = new User();
+                    final User user = new User();
                     user.setPhone(strPhoneNo);
                     user.setFirstName(strFirstName);
                     user.setLastName(strLastName);
                     user.setEmail(strEmail);
+                    final Session session = new Session(UserProfile.this);
                     FirebaseDatabase db = FirebaseDatabase.getInstance();
-                    db.getReference().child("Users").child(strPhoneNo).setValue(user);
+                    db.getReference().child("Users").child(strPhoneNo).setValue(user)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    session.setSession(user);
+                                    Intent it = new Intent(UserProfile.this, Dashboard.class);
+                                    startActivity(it);
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    helpers.showError(UserProfile.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+                                }
+                            });
 
                 }
 

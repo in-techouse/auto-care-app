@@ -25,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.concurrent.TimeUnit;
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
+import lcwu.fyp.autocareapp.director.Session;
+import lcwu.fyp.autocareapp.model.User;
 
 public class OTPVerification extends AppCompatActivity implements View.OnClickListener {
     private Helpers helpers;
@@ -206,6 +208,9 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
                     startActivity(intent);
                 }
                 else{
+                    User user = dataSnapshot.getValue(User.class);
+                    Session session = new Session(OTPVerification.this);
+                    session.setSession(user);
                     Intent intent = new Intent(OTPVerification.this, Dashboard.class);
                     startActivity(intent);
                 }
