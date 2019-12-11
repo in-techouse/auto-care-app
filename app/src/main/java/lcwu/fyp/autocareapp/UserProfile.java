@@ -45,6 +45,7 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
