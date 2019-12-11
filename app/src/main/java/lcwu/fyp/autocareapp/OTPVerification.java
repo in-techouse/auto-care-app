@@ -158,7 +158,9 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
-
+                        verifyProgress.setVisibility(View.GONE);
+                        btnVerify.setVisibility(View.VISIBLE);
+                        helpers.showError(OTPVerification.this, e.getMessage());
                     }
                 };
                 PhoneAuthProvider.getInstance().verifyPhoneNumber(strPhoneNo, 120, TimeUnit.SECONDS, this, callBack, resendToken);
