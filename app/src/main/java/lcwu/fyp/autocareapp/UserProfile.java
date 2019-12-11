@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.FirebaseDatabase;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Patterns;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
+import lcwu.fyp.autocareapp.model.User;
 
 public class UserProfile extends AppCompatActivity implements View.OnClickListener{
     private Helpers helpers;
@@ -79,6 +82,13 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
 
                 boolean flag = isValid();
                 if(flag){
+                    User user = new User();
+                    user.setPhone(strPhoneNo);
+                    user.setFirstName(strFirstName);
+                    user.setLastName(strLastName);
+                    user.setEmail(strEmail);
+                    FirebaseDatabase db = FirebaseDatabase.getInstance();
+                    db.getReference().child("Users").child(strPhoneNo).setValue(user);
 
                 }
 
