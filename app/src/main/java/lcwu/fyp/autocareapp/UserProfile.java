@@ -88,6 +88,8 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
 
                 boolean flag = isValid();
                 if(flag){
+                    userProfileProgress.setVisibility(View.VISIBLE);
+                    userProfile.setVisibility(View.GONE);
                     final User user = new User();
                     user.setPhone(strPhoneNo);
                     user.setFirstName(strFirstName);
@@ -99,6 +101,8 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    userProfileProgress.setVisibility(View.GONE);
+                                    userProfile.setVisibility(View.VISIBLE);
                                     session.setSession(user);
                                     Intent it = new Intent(UserProfile.this, Dashboard.class);
                                     startActivity(it);
@@ -107,6 +111,8 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+                                    userProfileProgress.setVisibility(View.GONE);
+                                    userProfile.setVisibility(View.VISIBLE);
                                     helpers.showError(UserProfile.this, Constants.ERROR_SOMETHING_WENT_WRONG);
                                 }
                             });
@@ -131,14 +137,14 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
             edtFirstName.setError(null);
         }
         if(strLastName.length() < 3){
-            edtLastName.setError(Constants.ERROR_FIRST_NAME);
+            edtLastName.setError(Constants.ERROR_LAST_NAME);
             flag = false;
         }
         else{
             edtLastName.setError(null);
         }
         if (strEmail.length() < 7 || !Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()){
-            edtEmail.setError(Constants.ERROR_FIRST_NAME);
+            edtEmail.setError(Constants.ERROR_EMAIL);
             flag = false;
         }
         else{
