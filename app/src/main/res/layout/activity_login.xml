@@ -16,13 +16,15 @@
         android:paddingTop="@dimen/mp30"
         android:paddingBottom="@dimen/mp50">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/header_icon"
             android:layout_width="@dimen/image_header_dimen"
             android:layout_height="@dimen/image_header_dimen"
+            android:src="@drawable/logo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/image_header_top_margin"
-            android:src="@drawable/github_logo" />
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/colorAccent"/>
 
         <RelativeLayout
             android:id="@+id/login_container"
