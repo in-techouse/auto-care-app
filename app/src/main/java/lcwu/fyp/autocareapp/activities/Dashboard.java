@@ -1,7 +1,6 @@
 package lcwu.fyp.autocareapp.activities;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import com.google.android.material.navigation.NavigationView;
@@ -16,7 +15,6 @@ import lcwu.fyp.autocareapp.R;
 
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-//    private AppBarConfiguration mAppBarConfiguration;
     private DrawerLayout drawer;
     private NavigationView navigationView;
     @Override
