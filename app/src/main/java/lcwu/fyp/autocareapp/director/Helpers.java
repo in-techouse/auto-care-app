@@ -7,7 +7,6 @@ import android.net.NetworkInfo;
 
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
 
-import lcwu.fyp.autocareapp.LoginActivity;
 import lcwu.fyp.autocareapp.R;
 
 public class Helpers {

@@ -1,4 +1,4 @@
-package lcwu.fyp.autocareapp;
+package lcwu.fyp.autocareapp.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Session;
 import lcwu.fyp.autocareapp.model.User;
 

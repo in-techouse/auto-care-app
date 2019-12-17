@@ -1,4 +1,4 @@
-package lcwu.fyp.autocareapp;
+package lcwu.fyp.autocareapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.concurrent.TimeUnit;
+
+import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
 import lcwu.fyp.autocareapp.director.Session;
@@ -58,6 +60,7 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
 
         // For primitive data type
         strPhoneNo = bundle.getString("phone");
+        Log.e("PhoneNumber", strPhoneNo);
         verificationId = bundle.getString("verificationId");
         // For non-primitive data type
         resendToken = bundle.getParcelable("resendToken");
