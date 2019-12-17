@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.OTPVerification">
+    tools:context=".activities.OTPVerification"
+    android:background="@color/colorPrimaryLight">
 
     <LinearLayout
         android:paddingTop="30dp"

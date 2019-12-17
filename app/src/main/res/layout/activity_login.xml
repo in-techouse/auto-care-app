@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/dark_gray">
+    android:background="@color/colorTextWhite">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:layout_height="@dimen/image_header_dimen"
             android:src="@drawable/logo"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/image_header_top_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             app:civ_border_width="2dp"
             app:civ_border_color="@color/colorAccent"/>
 
@@ -51,7 +51,7 @@
                         android:inputType="phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/colorPrimary"
                         android:padding="@dimen/mp12"
                         android:layout_margin="@dimen/mp12"
                         android:hint="@string/phone_no"/>
@@ -65,7 +65,7 @@
                     android:layout_marginLeft="@dimen/login_button_margin"
                     android:layout_marginRight="@dimen/login_button_margin"
                     android:layout_marginTop="@dimen/login_button_margin"
-                    android:textColor="@color/dark_gray"
+                    android:textColor="@color/colorPrimary"
                     android:text="@string/Log_in"/>
 
                 <ProgressBar
