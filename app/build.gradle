@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -33,7 +34,7 @@ dependencies {
     implementation 'com.android.support:design:29.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.android.support:support-v4:29.0.0'
-
+//    implementation 'com.android.support:multidex:1.0.3'
 
     // Firebase Libraries
     implementation 'com.google.firebase:firebase-core:17.2.1'
@@ -43,10 +44,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.1.0'
 
     // Google Play Services
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation 'com.google.maps:google-maps-services:0.9.3'
-    implementation 'org.slf4j:slf4j-nop:1.7.25'
+//    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+//    implementation 'com.google.android.gms:play-services-location:17.0.0'
+//    implementation 'com.google.maps:google-maps-services:0.9.3'
+//    implementation 'org.slf4j:slf4j-nop:1.7.25'
 
     // Third party open source libraries
     implementation 'com.shreyaspatil:MaterialDialog:1.0.0'
@@ -55,5 +56,8 @@ dependencies {
     implementation 'com.chaos.view:pinview:1.4.3'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
+    // Glide Image Loading
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 }
 apply plugin: 'com.google.gms.google-services'
