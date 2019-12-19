@@ -12,16 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <activity android:name=".activities.BookingDetailActivity"></activity>
+        <activity android:name=".activities.BookingActivity" />
+        <activity android:name=".activities.NotificationActivity" />
         <activity
             android:name=".activities.SplashActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.LoginActivity"
             android:windowSoftInputMode="stateHidden" />
@@ -29,18 +31,16 @@
             android:name=".activities.OTPVerification"
             android:parentActivityName=".activities.LoginActivity"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".activities.UserProfile"
             android:label="@string/title_activity_user_profile"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"/>
-
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.Dashboard"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>
