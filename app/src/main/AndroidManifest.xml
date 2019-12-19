@@ -12,9 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.BookingDetailActivity"></activity>
-        <activity android:name=".activities.BookingActivity" />
-        <activity android:name=".activities.NotificationActivity" />
+
         <activity
             android:name=".activities.SplashActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
@@ -32,15 +30,28 @@
             android:parentActivityName=".activities.LoginActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activities.UserProfile"
-            android:label="@string/title_activity_user_profile"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".activities.Dashboard"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.UserProfile"
+            android:label="@string/title_activity_user_profile"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".activities.Dashboard"/>
+        <activity
+            android:name=".activities.BookingDetailActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".activities.BookingActivity"/>
+        <activity
+            android:name=".activities.BookingActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".activities.Dashboard"/>
+        <activity
+            android:name=".activities.NotificationActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".activities.Dashboard"/>
     </application>
 
 </manifest>
