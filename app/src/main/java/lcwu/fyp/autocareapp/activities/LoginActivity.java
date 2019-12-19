@@ -126,6 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.e("LOGIN", "Verification Completed");
                 Intent it = new Intent(LoginActivity.this, OTPVerification.class);
                 Bundle bundle = new Bundle();
+                bundle.putString("phone", strPhoneNo);
                 bundle.putParcelable("phoneAuthCredential", phoneAuthCredential); // Because it's non-primitive data type
                 it.putExtras(bundle);
                 startActivity(it);

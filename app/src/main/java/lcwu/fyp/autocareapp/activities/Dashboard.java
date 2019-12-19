@@ -1,5 +1,6 @@
 package lcwu.fyp.autocareapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -36,6 +37,27 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
         Log.e("MenuItem", ""+id);
+        switch (id){
+            case R.id.nav_home:{
+                break;
+            }
+            case R.id.nav_booking:{
+                Intent it = new Intent(Dashboard.this,BookingActivity.class);
+                startActivity(it);
+                break;
+            }
+            case R.id.nav_notification:{
+                Intent it = new Intent(Dashboard.this,NotificationActivity.class);
+                startActivity(it);
+                break;
+            }
+            case R.id.nav_userProfile:{
+                break;
+            }
+            case R.id.nav_logout:{
+                break;
+            }
+        }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

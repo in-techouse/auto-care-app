@@ -21,4 +21,8 @@
     <string name="last_name">Last Name</string>
     <string name="email">Email</string>
     <string name="save">SAVE</string>
+    <string name="booking">Booking</string>
+    <string name="notification">Notification</string>
+    <string name="user_profile">User Profile</string>
+    <string name="log_out">Log Out</string>
 </resources>

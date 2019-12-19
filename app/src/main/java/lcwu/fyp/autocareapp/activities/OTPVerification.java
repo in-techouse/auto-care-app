@@ -60,6 +60,10 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
 
         // For primitive data type
         strPhoneNo = bundle.getString("phone");
+        if(strPhoneNo == null){
+            finish();
+            return;
+        }
         Log.e("PhoneNumber", strPhoneNo);
         verificationId = bundle.getString("verificationId");
         // For non-primitive data type
