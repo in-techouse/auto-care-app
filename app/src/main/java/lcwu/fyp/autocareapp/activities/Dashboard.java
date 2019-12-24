@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,8 +15,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import lcwu.fyp.autocareapp.R;
+import lcwu.fyp.autocareapp.director.Session;
 
-public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
@@ -57,6 +60,14 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 break;
             }
             case R.id.nav_logout:{
+                FirebaseAuth auth  = FirebaseAuth.getInstance();
+                Session session=new Session(Dashboard.this);
+                auth.signOut();
+                session.destroySession();
+                Intent it = new Intent(Dashboard.this,LoginActivity.class);
+                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(it);
+                finish();
                 break;
             }
         }

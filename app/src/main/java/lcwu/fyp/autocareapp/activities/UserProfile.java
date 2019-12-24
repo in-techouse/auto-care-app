@@ -107,6 +107,7 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
                                     userProfile.setVisibility(View.VISIBLE);
                                     session.setSession(user);
                                     Intent it = new Intent(UserProfile.this, Dashboard.class);
+                                    it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(it);
                                     finish();
                                 }

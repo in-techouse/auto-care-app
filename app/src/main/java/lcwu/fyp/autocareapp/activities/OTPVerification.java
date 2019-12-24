@@ -215,16 +215,19 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
                     Bundle bundle = new Bundle();
                     bundle.putString("phone", strPhoneNo);
                     intent.putExtras(bundle);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+                    finish();
                 }
                 else{
                     User user = dataSnapshot.getValue(User.class);
                     Session session = new Session(OTPVerification.this);
                     session.setSession(user);
                     Intent intent = new Intent(OTPVerification.this, Dashboard.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+                    finish();
                 }
-                finish();
             }
 
             @Override
