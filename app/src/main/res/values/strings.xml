@@ -25,4 +25,7 @@
     <string name="notification">Notification</string>
     <string name="user_profile">User Profile</string>
     <string name="log_out">Log Out</string>
+    <string name="enter_the_otp_code_you_received">Enter the OTP code you received</string>
+    <string name="verify">Verify</string>
+    <string name="resend_otp">RESEND OTP</string>
 </resources>

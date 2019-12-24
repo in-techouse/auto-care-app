@@ -8,13 +8,10 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_dashboard">
 
-    <TextView
-        android:textAlignment="gravity"
-        android:gravity="center"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:text="Hello Dashboard"
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map"
+        tools:context=".fragments.dashboard.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.OTPVerification"
-    android:background="@color/colorPrimaryLight">
+    android:background="@color/colorTextWhite">
 
     <LinearLayout
         android:paddingTop="30dp"
@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter the OTP code you received"
+            android:text="@string/enter_the_otp_code_you_received"
             android:textAlignment="center"
             android:textStyle="bold"
             android:textColor="@color/colorAccent"
@@ -65,7 +65,7 @@
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:text="RESEND OTP"
+            android:text="@string/resend_otp"
             android:textColor="@color/colorAccent"
             android:id="@+id/resend"
             android:layout_width="match_parent"
@@ -74,7 +74,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Verify"
+            android:text="@string/verify"
             android:textColor="@color/colorPrimary"
             android:id="@+id/btnverify"
             android:padding="12dp"
