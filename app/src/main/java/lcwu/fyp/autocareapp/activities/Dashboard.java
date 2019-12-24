@@ -126,6 +126,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         map.onResume();
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
