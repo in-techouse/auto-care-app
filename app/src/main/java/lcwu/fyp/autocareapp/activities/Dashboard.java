@@ -4,6 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -15,10 +23,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import lcwu.fyp.autocareapp.R;
+import lcwu.fyp.autocareapp.director.Constants;
+import lcwu.fyp.autocareapp.director.Helpers;
 import lcwu.fyp.autocareapp.director.Session;
 
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    private MapView map;
+    private Helpers helpers;
+    private Session session;
+    private GoogleMap googleMap;
     private DrawerLayout drawer;
     private NavigationView navigationView;
     @Override
@@ -34,6 +47,26 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        session=new Session(Dashboard.this);
+        helpers=new Helpers();
+        map = findViewById(R.id.map);
+        map.onCreate(savedInstanceState);
+        try {
+            MapsInitializer.initialize(Dashboard.this);
+            map.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap gM) {
+                    googleMap = gM;
+                    LatLng defaultPosition = new LatLng(31.5204,74.3487) ;
+                    CameraPosition cameraPosition =new CameraPosition.Builder().target(defaultPosition).zoom(12).build();
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                }
+            });
+        }
+        catch (Exception e){
+          helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+        }
     }
 
     @Override
@@ -73,5 +106,30 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        map.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        map.onLowMemory();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        map.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        map.onPause();
+
     }
 }
