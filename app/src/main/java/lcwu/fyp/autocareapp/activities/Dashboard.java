@@ -57,6 +57,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             map.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap gM) {
+                    Log.e("Maps", "Call back received");
                     googleMap = gM;
                     LatLng defaultPosition = new LatLng(31.5204,74.3487) ;
                     CameraPosition cameraPosition =new CameraPosition.Builder().target(defaultPosition).zoom(12).build();
