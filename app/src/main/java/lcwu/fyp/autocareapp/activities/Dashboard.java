@@ -52,6 +52,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 break;
             }
             case R.id.nav_userProfile:{
+                Intent it = new Intent(Dashboard.this,UserProfile.class);
+                startActivity(it);
                 break;
             }
             case R.id.nav_logout:{
