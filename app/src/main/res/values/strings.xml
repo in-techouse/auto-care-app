@@ -28,4 +28,10 @@
     <string name="enter_the_otp_code_you_received">Enter the OTP code you received</string>
     <string name="verify">Verify</string>
     <string name="resend_otp">RESEND OTP</string>
+
+    <string-array name="types">
+        <item>Car Mechanic</item>
+        <item>Bike Mechanic</item>
+        <item>Petrol Provider</item>
+    </string-array>
 </resources>

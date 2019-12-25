@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
@@ -36,8 +37,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private User user;
-    private CircleImageView profieImage;
-    private TextView profileName, profileEmail;
+    private CircleImageView profile_image;
+    private TextView profile_name, profile_email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,21 +55,17 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
         session=new Session(Dashboard.this);
         user = session.getUser();
-        View header = navigationView.getHeaderView(0);
-        profieImage = header.findViewById(R.id.profile_image);
-        profileName = header.findViewById(R.id.profile_name);
-        profileEmail = header.findViewById(R.id.profile_email);
-        String name = user.getFirstName() + " " + user.getLastName();
-        profileName.setText(name);
-        profileEmail.setText(user.getEmail());
-
-
-
-
-
-
-
         helpers=new Helpers();
+
+
+        View header = navigationView.getHeaderView(0);
+        profile_email = header.findViewById(R.id.profile_email);
+        profile_name = header.findViewById(R.id.profile_name);
+        profile_image = header.findViewById(R.id.profile_image);
+        String name = user.getFirstName() + " " + user.getLastName();
+        profile_name.setText(name);
+        profile_email.setText(user.getEmail());
+
         map = findViewById(R.id.map);
         map.onCreate(savedInstanceState);
         try {
@@ -114,6 +111,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
             case R.id.nav_logout:{
                 FirebaseAuth auth  = FirebaseAuth.getInstance();
+                Session session=new Session(Dashboard.this);
                 auth.signOut();
                 session.destroySession();
                 Intent it = new Intent(Dashboard.this,LoginActivity.class);
