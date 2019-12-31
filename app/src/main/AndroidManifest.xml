@@ -20,6 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activities.BecameProvider"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -30,46 +31,40 @@
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.LoginActivity"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".activities.OTPVerification"
             android:parentActivityName=".activities.LoginActivity"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".activities.Dashboard"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".activities.UserProfile"
             android:label="@string/title_activity_user_profile"
+            android:parentActivityName=".activities.Dashboard"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".activities.Dashboard"/>
-
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.BookingDetailActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".activities.BookingActivity"/>
-
+            android:parentActivityName=".activities.BookingActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.BookingActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".activities.Dashboard"/>
-
+            android:parentActivityName=".activities.Dashboard"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.NotificationActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".activities.Dashboard"/>
+            android:parentActivityName=".activities.Dashboard"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

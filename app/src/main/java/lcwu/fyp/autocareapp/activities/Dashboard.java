@@ -120,6 +120,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 finish();
                 break;
             }
+            case R.id.became_a_provider:{
+                break;
+            }
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -149,5 +152,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         super.onPause();
         map.onPause();
 
+
     }
+
 }
