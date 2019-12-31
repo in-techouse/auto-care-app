@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="lcwu.fyp.autocareapp">
 
+    <uses-permission android:name="android.permission.ACCEPT_GPS"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -65,6 +66,7 @@
             android:name=".activities.NotificationActivity"
             android:parentActivityName=".activities.Dashboard"
             android:windowSoftInputMode="stateHidden" />
+
     </application>
 
 </manifest>

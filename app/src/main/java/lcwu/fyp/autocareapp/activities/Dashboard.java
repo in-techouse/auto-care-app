@@ -1,6 +1,9 @@
 package lcwu.fyp.autocareapp.activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -13,6 +16,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -78,12 +83,35 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                     LatLng defaultPosition = new LatLng(31.5204,74.3487) ;
                     CameraPosition cameraPosition =new CameraPosition.Builder().target(defaultPosition).zoom(12).build();
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    enableLocation();
                 }
             });
         }
+
         catch (Exception e){
-          helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+          helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG );
         }
+    }
+    public void enableLocation(){
+        if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(Dashboard.this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+
+            ActivityCompat.requestPermissions(Dashboard.this, new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 10);
+            return;
+        }
+          googleMap.setMyLocationEnabled(true);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+       if (requestCode==10){
+           if (grantResults.length> 0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+               enableLocation();
+           }
+       }
     }
 
     @Override
