@@ -28,10 +28,23 @@
     <string name="enter_the_otp_code_you_received">Enter the OTP code you received</string>
     <string name="verify">Verify</string>
     <string name="resend_otp">RESEND OTP</string>
+    <string name="enter_your_email">Enter Your Email</string>
+    <string name="upgrade_account">UPGRADE ACCOUNT</string>
 
     <string-array name="types">
+        <item>Select Type</item>
         <item>Car Mechanic</item>
         <item>Bike Mechanic</item>
         <item>Petrol Provider</item>
+    </string-array>
+    <string-array name="experience">
+        <item>Select Experience</item>
+        <item>Six month</item>
+        <item>One Year</item>
+        <item>Two years</item>
+        <item>Three Years</item>
+        <item>Four Years</item>
+        <item>Five Years</item>
+        <item>Five and Half Years</item>
     </string-array>
 </resources>

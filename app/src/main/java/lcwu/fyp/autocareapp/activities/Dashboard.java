@@ -149,6 +149,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 break;
             }
             case R.id.became_a_provider:{
+                Intent it = new Intent(Dashboard.this,BecameProvider.class);
+                startActivity(it);
                 break;
             }
         }
