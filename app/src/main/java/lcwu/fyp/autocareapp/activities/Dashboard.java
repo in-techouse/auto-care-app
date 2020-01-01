@@ -2,11 +2,21 @@ package lcwu.fyp.autocareapp.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationProvider;
+import android.media.audiofx.Equalizer;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -14,6 +24,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -22,6 +33,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -97,16 +110,76 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
           helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG );
         }
     }
-    public void enableLocation(){
+    private void askForPermission(){
         if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(Dashboard.this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-
+                && ActivityCompat.checkSelfPermission(Dashboard.this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(Dashboard.this, new String[]{
                     Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 10);
             return;
         }
+    }
+    public void enableLocation(){
+        askForPermission();
           googleMap.setMyLocationEnabled(true);
+          googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+              @Override
+              public boolean onMyLocationButtonClick() {
+                  FusedLocationProviderClient current = LocationServices.getFusedLocationProviderClient(Dashboard.this);
+                  askForPermission();
 
+                  current.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>(){
+                      public void onSuccess(Location loction){
+                          getDeviceLocation();
+                      }
+                  });
+                  return true;
+              }
+          });
+    }
+
+    private void getDeviceLocation(){
+        try {
+            LocationManager lm =(LocationManager)getSystemService(Context.LOCATION_SERVICE);
+            boolean gps_enabled = false;
+            boolean network_enabled = false;
+            try {
+                gps_enabled =lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            }
+            catch (Exception ex){
+                helpers.showError(Dashboard.this,Constants.ERROR_SOMETHING_WENT_WRONG);
+            }
+            try {
+                network_enabled=lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            }catch (Exception ex){
+                helpers.showError(Dashboard.this,Constants.ERROR_SOMETHING_WENT_WRONG);
+
+            }
+            if (!gps_enabled&& !network_enabled){
+                AlertDialog.Builder dialog = new AlertDialog.Builder(Dashboard.this);
+                dialog.setMessage("Oppsss.Your Loctation Servises is Off./n Please turn on your Location and Try again Later");
+                dialog.setPositiveButton("Let me On", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(myIntent);
+
+                    }
+                });
+                dialog.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                dialog.show();
+                return;
+            }
+            askForPermission();
+            return;
+        }
+        catch (Exception e){
+            helpers.showError(Dashboard.this,Constants.ERROR_SOMETHING_WENT_WRONG);
+        }
     }
 
     @Override
