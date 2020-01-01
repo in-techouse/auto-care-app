@@ -22,7 +22,7 @@
             android:layout_height="wrap_content">
             <EditText
                 android:hint="@string/enter_your_email"
-                android:id="@+id/edtEmail"
+                android:id="@+id/edit_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>

@@ -25,6 +25,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -44,6 +47,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private User user;
     private CircleImageView profile_image;
     private TextView profile_name, profile_email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +74,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         String name = user.getFirstName() + " " + user.getLastName();
         profile_name.setText(name);
         profile_email.setText(user.getEmail());
+
 
         map = findViewById(R.id.map);
         map.onCreate(savedInstanceState);

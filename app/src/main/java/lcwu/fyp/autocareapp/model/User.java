@@ -1,16 +1,11 @@
 package lcwu.fyp.autocareapp.model;
 
 public class User {
-    private String phone, firstName, lastName, email;
+    private String phone, firstName, lastName, email, id, type, experience, image;
+    private int roll;
 
     public User() {
-    }
 
-    public User(String phone, String firstName, String lastName, String email) {
-        this.phone = phone;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
     }
 
     public String getPhone() {
@@ -43,5 +38,57 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public int getRoll() {
+        return roll;
+    }
+
+    public void setRoll(int roll) {
+        this.roll = roll;
+    }
+
+    public User(String phone, String firstName, String lastName, String email, String id, String type, String experience, String image, int roll) {
+        this.phone = phone;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.id = id;
+        this.type = type;
+        this.experience = experience;
+        this.image = image;
+        this.roll = roll;
     }
 }
