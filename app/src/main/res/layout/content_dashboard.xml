@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:maxLines="1"
-                android:id="@+id/locationaddres"
+                android:id="@+id/locationAddress"
                 android:text="loction address"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

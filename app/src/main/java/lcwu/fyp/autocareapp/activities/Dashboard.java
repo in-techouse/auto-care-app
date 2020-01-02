@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationProvider;
@@ -51,6 +53,10 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
@@ -70,6 +76,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private TextView profile_name, profile_email;
     private FusedLocationProviderClient locationProviderClient;
     private Marker marker;
+    private TextView locationAddress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +104,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         String name = user.getFirstName() + " " + user.getLastName();
         profile_name.setText(name);
         profile_email.setText(user.getEmail());
+
+        locationAddress = findViewById(R.id.locationAddress);
 
 
         map = findViewById(R.id.map);
@@ -204,13 +213,27 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                             marker = googleMap.addMarker(new MarkerOptions().position(me).title("You're Here")
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(me, 11));
+                            Geocoder geocoder = new Geocoder(Dashboard.this);
+                            List<Address> addresses = null;
+                            try {
+                                addresses = geocoder.getFromLocation(me.latitude, me.longitude, 1);
+                                if (addresses != null && addresses.size() > 0) {
+                                    Address address = addresses.get(0);
+                                    String strAddress = "";
+                                    for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                                        strAddress = strAddress + " " + address.getAddressLine(i);
+                                    }
+                                    locationAddress.setText(strAddress);
+                                }
+                            } catch (Exception exception) {
+                                helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+                            }
                         }
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.e("Map", "Location Failure: " + e.getMessage());
                     helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
                 }
             });
