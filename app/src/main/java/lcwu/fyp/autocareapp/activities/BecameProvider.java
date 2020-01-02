@@ -1,5 +1,6 @@
 package lcwu.fyp.autocareapp.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -10,6 +11,11 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
+
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
@@ -51,7 +57,7 @@ public class BecameProvider extends AppCompatActivity implements View.OnClickLis
         int id = v.getId();
         switch (id){
             case R.id.upgrade_account:{
-                boolean flag = helpers.isConnected(this);
+                final boolean flag = helpers.isConnected(this);
                 if(!flag){
                     helpers.showNoInternetError(BecameProvider.this);
                     return;
@@ -59,7 +65,30 @@ public class BecameProvider extends AppCompatActivity implements View.OnClickLis
 
                 boolean flag1 = isValid();
                 if(flag1){
-
+                    upgrade_account.setVisibility(View.GONE);
+                    progress_bar.setVisibility(View.VISIBLE);
+                    user.setRoll(1);
+                    user.setEmail(str_email);
+                    user.setType(str_type);
+                    user.setExperience(str_experience);
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    database.getReference().child("Users").child(user.getPhone()).setValue(user)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    upgrade_account.setVisibility(View.GONE);
+                                    progress_bar.setVisibility(View.VISIBLE);
+                                    session.setSession(user);
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            upgrade_account.setVisibility(View.GONE);
+                            progress_bar.setVisibility(View.VISIBLE);
+                            helpers.showError(BecameProvider.this,Constants.ERROR_SOMETHING_WENT_WRONG);
+                        }
+                    });
 
                 }
                 break;
@@ -84,9 +113,15 @@ public class BecameProvider extends AppCompatActivity implements View.OnClickLis
             flag=false;
             Error = Error+"Select Your Type First\n";
         }
+        else {
+            str_type = type.getSelectedItem().toString();
+        }
         if(experience.getSelectedItemPosition()==0){
             flag=false;
             Error = Error+"Select Your Experience First\n";
+        }
+        else {
+            str_experience = experience.getSelectedItem().toString();
         }
         if(!Error.equals("")){
             helpers.showError(BecameProvider.this,Error);
