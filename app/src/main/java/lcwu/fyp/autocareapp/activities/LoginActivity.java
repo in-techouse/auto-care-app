@@ -135,13 +135,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
                 Log.e("LOGIN", "Verification Failed: " + e.getMessage());
-                helpers.showError(LoginActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+                loginProgress.setVisibility(View.GONE);
+                btnLogin.setVisibility(View.VISIBLE);
+                helpers.showError(LoginActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG + " " + e.getMessage());
             }
         };
         provider.verifyPhoneNumber(strPhoneNo, 120, TimeUnit.SECONDS, this, callBack);
         Log.e("LOGIN", "Code Sent");
     }
-
-
-
 }

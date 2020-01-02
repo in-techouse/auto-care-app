@@ -22,9 +22,16 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -40,6 +47,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -60,7 +68,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private User user;
     private CircleImageView profile_image;
     private TextView profile_name, profile_email;
-
+    private FusedLocationProviderClient locationProviderClient;
+    private Marker marker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +87,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         session=new Session(Dashboard.this);
         user = session.getUser();
         helpers=new Helpers();
+        locationProviderClient = LocationServices.getFusedLocationProviderClient(Dashboard.this);
 
 
         View header = navigationView.getHeaderView(0);
@@ -97,6 +107,14 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 @Override
                 public void onMapReady(GoogleMap gM) {
                     Log.e("Maps", "Call back received");
+
+                    View locationButton = ((View) map.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+                    RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+                    // position on right bottom
+                    rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+                    rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+                    rlp.setMargins(0, 350, 100, 0);
+
                     googleMap = gM;
                     LatLng defaultPosition = new LatLng(31.5204,74.3487) ;
                     CameraPosition cameraPosition =new CameraPosition.Builder().target(defaultPosition).zoom(12).build();
@@ -110,31 +128,31 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
           helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG );
         }
     }
-    private void askForPermission(){
+    private boolean askForPermission(){
         if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(Dashboard.this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(Dashboard.this, new String[]{
                     Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 10);
-            return;
+            return false;
         }
+        return true;
     }
     public void enableLocation(){
-        askForPermission();
-          googleMap.setMyLocationEnabled(true);
-          googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-              @Override
-              public boolean onMyLocationButtonClick() {
-                  FusedLocationProviderClient current = LocationServices.getFusedLocationProviderClient(Dashboard.this);
-                  askForPermission();
-
-                  current.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>(){
-                      public void onSuccess(Location loction){
-                          getDeviceLocation();
-                      }
-                  });
-                  return true;
-              }
-          });
+        if(askForPermission()){
+            googleMap.setMyLocationEnabled(true);
+            googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                @Override
+                public boolean onMyLocationButtonClick() {
+                    FusedLocationProviderClient current = LocationServices.getFusedLocationProviderClient(Dashboard.this);
+                    current.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>(){
+                        public void onSuccess(Location location){
+                            getDeviceLocation();
+                        }
+                    });
+                    return true;
+                }
+            });
+        }
     }
 
     private void getDeviceLocation(){
@@ -156,7 +174,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
             if (!gps_enabled&& !network_enabled){
                 AlertDialog.Builder dialog = new AlertDialog.Builder(Dashboard.this);
-                dialog.setMessage("Oppsss.Your Loctation Servises is Off./n Please turn on your Location and Try again Later");
+                dialog.setMessage("Oppsss.Your Location Service is off.\n Please turn on your Location and Try again Later");
                 dialog.setPositiveButton("Let me On", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -165,7 +183,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
                     }
                 });
-                dialog.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -174,8 +192,28 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 dialog.show();
                 return;
             }
-            askForPermission();
-            return;
+
+            locationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    if (task.isSuccessful()) {
+                        Location location = task.getResult();
+                        if (location != null) {
+                            googleMap.clear();
+                            LatLng me = new LatLng(location.getLatitude(), location.getLongitude());
+                            marker = googleMap.addMarker(new MarkerOptions().position(me).title("You're Here")
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(me, 11));
+                        }
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("Map", "Location Failure: " + e.getMessage());
+                    helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+                }
+            });
         }
         catch (Exception e){
             helpers.showError(Dashboard.this,Constants.ERROR_SOMETHING_WENT_WRONG);

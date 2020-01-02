@@ -21,7 +21,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.BecameProvider"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -66,6 +65,10 @@
             android:name=".activities.NotificationActivity"
             android:parentActivityName=".activities.Dashboard"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.BecameProvider"
+            android:parentActivityName=".activities.Dashboard"/>
+
 
     </application>
 

@@ -4,12 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
@@ -44,10 +44,6 @@ public class BecameProvider extends AppCompatActivity implements View.OnClickLis
 
 
         upgrade_account.setOnClickListener(this);
-
-
-
-
     }
 
     @Override
@@ -62,24 +58,12 @@ public class BecameProvider extends AppCompatActivity implements View.OnClickLis
                 }
 
                 boolean flag1 = isValid();
-                    if(flag1){
+                if(flag1){
 
 
-                    }
-
-
-
-
-
-
-
-
+                }
                 break;
             }
-
-
-
-
 
         }
 
@@ -106,8 +90,23 @@ public class BecameProvider extends AppCompatActivity implements View.OnClickLis
         }
         if(!Error.equals("")){
             helpers.showError(BecameProvider.this,Error);
-
         }
         return flag;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                finish();
+                break;
+            }
+        }
+        return true;
     }
 }
