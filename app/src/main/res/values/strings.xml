@@ -48,4 +48,5 @@
         <item>Five Years</item>
         <item>Five and Half Years</item>
     </string-array>
+    <string name="title_activity_provider_dashboard">ProviderDashboard</string>
 </resources>

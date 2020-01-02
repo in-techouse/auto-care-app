@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="lcwu.fyp.autocareapp">
 
-    <uses-permission android:name="android.permission.ACCEPT_GPS"/>
+    <uses-permission android:name="android.permission.ACCEPT_GPS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -21,6 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".activities.ProviderDashboard"
+            android:label="@string/title_activity_provider_dashboard"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -67,9 +71,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.BecameProvider"
-            android:parentActivityName=".activities.Dashboard"/>
-
-
+            android:parentActivityName=".activities.Dashboard" />
     </application>
 
 </manifest>
