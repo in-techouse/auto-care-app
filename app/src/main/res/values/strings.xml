@@ -23,7 +23,7 @@
     <string name="save">SAVE</string>
     <string name="booking">Booking</string>
     <string name="notification">Notification</string>
-    <string name="user_profile">User Profile</string>
+    <string name="user_profile">Profile</string>
     <string name="log_out">Logout</string>
     <string name="enter_the_otp_code_you_received">Enter the OTP code you received</string>
     <string name="verify">Verify</string>
