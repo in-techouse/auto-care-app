@@ -9,7 +9,6 @@
     tools:showIn="@layout/app_bar_provider_dashboard">
 
     <com.google.android.gms.maps.MapView
-
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
@@ -28,30 +27,26 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         app:cardElevation="20dp"
-        app:cardCornerRadius="13dp"
-        >
+        app:cardCornerRadius="13dp">
         <LinearLayout
             android:orientation="vertical"
             android:background="@color/colorTextWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            >
+            android:padding="8dp">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:maxLines="1"
                 android:id="@+id/locationheading"
-                android:text="My location"
-                />
+                android:text="My location"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:maxLines="1"
-                android:id="@+id/locationAddress"
-                android:text="loction address"/>
+                android:id="@+id/locationAddress"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
