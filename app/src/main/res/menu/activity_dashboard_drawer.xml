@@ -28,13 +28,7 @@
         <item
             android:id="@+id/became_a_provider"
             android:icon="@drawable/provider"
-            android:title="Became A Provider"/>
+            android:title="@string/became_a_provider"/>
     </group>
-
-
-
-
-
-
 
 </menu>

@@ -24,7 +24,7 @@
     <string name="booking">Booking</string>
     <string name="notification">Notification</string>
     <string name="user_profile">User Profile</string>
-    <string name="log_out">Log Out</string>
+    <string name="log_out">Logout</string>
     <string name="enter_the_otp_code_you_received">Enter the OTP code you received</string>
     <string name="verify">Verify</string>
     <string name="resend_otp">RESEND OTP</string>
@@ -49,4 +49,5 @@
         <item>Five and Half Years</item>
     </string-array>
     <string name="title_activity_provider_dashboard">ProviderDashboard</string>
+    <string name="became_a_provider">Became a Provider</string>
 </resources>

@@ -1,10 +1,8 @@
 package lcwu.fyp.autocareapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.MenuItem;
-
 import lcwu.fyp.autocareapp.R;
 
 public class BookingDetailActivity extends AppCompatActivity {

@@ -303,7 +303,5 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
     protected void onPause() {
         super.onPause();
         map.onPause();
-
-
     }
 }
