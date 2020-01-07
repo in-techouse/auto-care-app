@@ -259,7 +259,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         Log.e("MenuItem", ""+id);
         switch (id){
             case R.id.nav_home:{
-                break;
+                break; 
             }
             case R.id.nav_booking:{
                 Intent it = new Intent(Dashboard.this,BookingActivity.class);
