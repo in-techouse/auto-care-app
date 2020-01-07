@@ -40,7 +40,10 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -63,6 +66,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private FusedLocationProviderClient locationProviderClient;
     private Marker marker;
     private TextView locationAddress;
+    private Spinner selecttype;
+    private CheckBox showmechanics,showpetrolpumps;
+    private Button confirm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +82,12 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
+        findViewById(R.id.selecttype);
+        findViewById(R.id.showmechanics);
+        findViewById(R.id.showpetrolpumps);
+        findViewById(R.id.confirm);
 
         session=new Session(Dashboard.this);
         user = session.getUser();
