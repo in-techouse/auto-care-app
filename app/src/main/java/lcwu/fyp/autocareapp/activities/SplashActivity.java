@@ -40,18 +40,21 @@ public class SplashActivity extends Activity {
                     imageView.clearAnimation();
                     Session session = new Session(SplashActivity.this);
                     User user = session.getUser();
-                    if(user == null){
+                    if (user == null) {
                         Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                         startActivity(intent);
+                    } else {
+                        if (user.getRoll() == 0) {
+                            Intent intent = new Intent(SplashActivity.this, Dashboard.class);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(SplashActivity.this, ProviderDashboard.class);
+                            startActivity(intent);
+                        }
+                        finish();
                     }
-                    else{
-                        Intent intent = new Intent(SplashActivity.this, Dashboard.class);
-                        startActivity(intent);
-                    }
-                    finish();
+                    isFirstAnimation = true;
                 }
-
-                isFirstAnimation = true;
             }
 
             @Override

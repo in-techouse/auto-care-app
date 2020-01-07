@@ -223,9 +223,15 @@ public class OTPVerification extends AppCompatActivity implements View.OnClickLi
                     User user = dataSnapshot.getValue(User.class);
                     Session session = new Session(OTPVerification.this);
                     session.setSession(user);
-                    Intent intent = new Intent(OTPVerification.this, Dashboard.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+                    if (user.getRoll() == 0) {
+                        Intent intent = new Intent(OTPVerification.this, Dashboard.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(OTPVerification.this, ProviderDashboard.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
                     finish();
                 }
             }
