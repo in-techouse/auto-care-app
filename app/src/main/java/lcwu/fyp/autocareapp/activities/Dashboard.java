@@ -84,14 +84,14 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         toggle.syncState();
 
 
-        findViewById(R.id.selecttype);
-        findViewById(R.id.showmechanics);
-        findViewById(R.id.showpetrolpumps);
-        findViewById(R.id.confirm);
+        selecttype = findViewById(R.id.selecttype);
+        showmechanics = findViewById(R.id.showmechanics);
+        showpetrolpumps = findViewById(R.id.showpetrolpumps);
+        confirm = findViewById(R.id.confirm);
 
-        session=new Session(Dashboard.this);
+        session = new Session(Dashboard.this);
         user = session.getUser();
-        helpers=new Helpers();
+        helpers = new Helpers();
         locationProviderClient = LocationServices.getFusedLocationProviderClient(Dashboard.this);
 
 

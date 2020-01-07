@@ -73,31 +73,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/selecttype"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/colorTextWhite"
+                android:id="@+id/confirm"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <CheckBox
+                    android:textSize="13dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/showmechanics"
-                    android:text="Show Mechanics"
+                    android:text="@string/show_mechanics"
                     android:layout_alignParentStart="true"/>
                 <CheckBox
+                    android:textSize="13dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/showpetrolpumps"
-                    android:text="Show Petrol Pumps"
+                    android:text="@string/show_petrol_pumps"
                     android:layout_marginStart="3dp"
                     android:layout_toEndOf="@id/showmechanics"/>
-
             </RelativeLayout>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="CONFIRM"
-                android:background="@color/colorPrimary"
-                android:textColor="@color/colorTextWhite"
-                android:id="@+id/confirm"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

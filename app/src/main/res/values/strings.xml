@@ -50,4 +50,7 @@
     </string-array>
     <string name="title_activity_provider_dashboard">ProviderDashboard</string>
     <string name="became_a_provider">Became a Provider</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="show_petrol_pumps">Show Petrol Pumps</string>
+    <string name="show_mechanics">Show Mechanics</string>
 </resources>
