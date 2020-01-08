@@ -98,6 +98,8 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
                     user.setRoll(0);
                     user.setType("");
                     user.setExperience("");
+                    user.setLongitude(0);
+                    user.setLatidue(0);
                     final Session session = new Session(UserProfile.this);
                     FirebaseDatabase db = FirebaseDatabase.getInstance();
                     db.getReference().child("Users").child(strPhoneNo).setValue(user)
