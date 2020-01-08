@@ -64,7 +64,7 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
     private NavigationView navigationView;
     private User user;
     private CircleImageView profile_image;
-    private TextView profile_name, profile_email;
+    private TextView profile_name, profile_email, profile_phone, profile_type, profile_experience;
     private FusedLocationProviderClient locationProviderClient;
     private Marker marker;
     private TextView locationAddress;
@@ -93,10 +93,15 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
         profile_email = header.findViewById(R.id.profile_email);
         profile_name = header.findViewById(R.id.profile_name);
         profile_image = header.findViewById(R.id.profile_image);
+        profile_phone = header.findViewById(R.id.profile_phone);
+        profile_type = header.findViewById(R.id.profile_type);
+        profile_experience = header.findViewById(R.id.profile_experience);
         String name = user.getFirstName() + " " + user.getLastName();
         profile_name.setText(name);
         profile_email.setText(user.getEmail());
-
+        profile_type.setText(user.getType());
+        profile_phone.setText(user.getPhone());
+        profile_experience.setText("Experience: " + user.getExperience());
         locationAddress = findViewById(R.id.locationAddress);
         map = findViewById(R.id.map);
         map.onCreate(savedInstanceState);

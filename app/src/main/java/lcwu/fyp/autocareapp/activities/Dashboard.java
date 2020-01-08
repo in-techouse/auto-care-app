@@ -66,7 +66,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private NavigationView navigationView;
     private User user;
     private CircleImageView profile_image;
-    private TextView profile_name, profile_email;
+    private TextView profile_name, profile_email, profile_phone;
     private FusedLocationProviderClient locationProviderClient;
     private Marker marker;
     private TextView locationAddress;
@@ -103,9 +103,12 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         profile_email = header.findViewById(R.id.profile_email);
         profile_name = header.findViewById(R.id.profile_name);
         profile_image = header.findViewById(R.id.profile_image);
+        profile_phone = header.findViewById(R.id.profile_phone);
+
         String name = user.getFirstName() + " " + user.getLastName();
         profile_name.setText(name);
         profile_email.setText(user.getEmail());
+        profile_phone.setText(user.getPhone());
 
         locationAddress = findViewById(R.id.locationAddress);
 
