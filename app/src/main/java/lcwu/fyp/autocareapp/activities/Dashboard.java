@@ -31,6 +31,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -54,6 +57,7 @@ import lcwu.fyp.autocareapp.director.Session;
 import lcwu.fyp.autocareapp.model.User;
 
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private DatabaseReference reference= FirebaseDatabase.getInstance().getReference().child("Users");
     private MapView map;
     private Helpers helpers;
     private Session session;
@@ -159,6 +163,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                     return true;
                 }
             });
+            getDeviceLocation();
         }
     }
 
@@ -222,6 +227,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                                         strAddress = strAddress + " " + address.getAddressLine(i);
                                     }
                                     locationAddress.setText(strAddress);
+                                    updateUserLocation(me.latitude,me.longitude);
                                 }
                             } catch (Exception exception) {
                                 helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
@@ -318,6 +324,15 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     protected void onPause() {
         super.onPause();
         map.onPause();
+    }
+
+    private void updateUserLocation(double lat,double lng){
+        user.setLatidue(lat);
+        user.setLongitude(lng);
+        session.setSession(user);
+        reference.child(user.getPhone()).setValue(user);
+
+
     }
 
 }
