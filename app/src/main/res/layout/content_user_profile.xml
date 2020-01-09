@@ -79,7 +79,7 @@
             android:layout_marginLeft="@dimen/login_button_margin"
             android:layout_marginRight="@dimen/login_button_margin"
             android:layout_marginTop="@dimen/login_button_margin"
-            android:textColor="@color/dark_gray"
+            android:textColor="@color/colorTextWhite"
             android:text="@string/save"/>
 
         <ProgressBar

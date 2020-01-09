@@ -21,10 +21,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity
-            android:name=".activities.ProviderDashboard"
-            android:label="@string/title_activity_provider_dashboard"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -72,6 +68,10 @@
         <activity
             android:name=".activities.BecameProvider"
             android:parentActivityName=".activities.Dashboard" />
+        <activity
+            android:name=".activities.ProviderDashboard"
+            android:label="@string/title_activity_provider_dashboard"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

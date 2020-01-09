@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
@@ -28,42 +29,36 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
     private String strPhoneNo, strFirstName, strLastName, strEmail;
     private Button userProfile;
     private ProgressBar userProfileProgress;
-
+    private ImageView image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        Intent intent = getIntent();
-        if(intent == null){
-            finish();
-            return;
-        }
-
-        Bundle bundle = intent.getExtras();
-        if(bundle == null){
-            finish();
-            return;
-        }
-
-        strPhoneNo = bundle.getString("phone");
+//        Intent intent = getIntent();
+//        if(intent == null){
+//            finish();
+//            return;
+//        }
+//
+//        Bundle bundle = intent.getExtras();
+//        if(bundle == null){
+//            finish();
+//            return;
+//        }
+//
+//        strPhoneNo = bundle.getString("phone");
+        strPhoneNo = "";
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
+        toolbar.setTitle("AUTO CARE APP");
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         helpers = new Helpers();
 
+        image = findViewById(R.id.image);
+        image.setImageDrawable(getResources().getDrawable(R.drawable.logo));
         edtPhoneNo = findViewById(R.id.edtPhoneNo);
         edtFirstName = findViewById(R.id.edtFirstName);
         edtLastName = findViewById(R.id.edtLastName);
