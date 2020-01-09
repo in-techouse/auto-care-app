@@ -20,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -31,8 +32,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
@@ -48,6 +52,8 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lcwu.fyp.autocareapp.R;
@@ -57,6 +63,7 @@ import lcwu.fyp.autocareapp.director.Session;
 import lcwu.fyp.autocareapp.model.User;
 
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private List<User> users;
     private DatabaseReference reference= FirebaseDatabase.getInstance().getReference().child("Users");
     private MapView map;
     private Helpers helpers;
@@ -86,6 +93,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        users=new ArrayList<>();
 
 
         selecttype = findViewById(R.id.selecttype);
@@ -167,6 +175,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 }
             });
             getDeviceLocation();
+            getOnProviders();
         }
     }
 
@@ -335,6 +344,41 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         session.setSession(user);
         reference.child(user.getPhone()).setValue(user);
 
+
+    }
+    private void getOnProviders(){
+        reference.orderByChild("roll").equalTo(1).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    User u=data.getValue(User.class);
+                    if(u != null){
+                        LatLng user_location =new LatLng(u.getLatidue(),u.getLongitude());
+                        MarkerOptions markerOptions = new MarkerOptions().position(user_location).title(u.getType());
+                        if(u.getType().equals("Car Mechanic"))
+                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.car));
+                        else if(u.getType().equals("Bike Mechanic"))
+                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.bike));
+                        else if(u.getType().equals("Petrol Provider"))
+                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.petrolpump));
+                        Marker marker = googleMap.addMarker(markerOptions);
+                        marker.showInfoWindow();
+                        marker.setTag(u);
+                        Log.e("UserLocation", "Name: " + u.getFirstName() + " Lat: " + u.getLatidue() + " Lng: " + u.getLongitude());
+                        users.add(u);
+                    }
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
