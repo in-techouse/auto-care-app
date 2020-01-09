@@ -9,6 +9,7 @@
     <dimen name="login_button_margin">16dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">220dp</dimen>
+    <dimen name="nav_header_height_1">250dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
 

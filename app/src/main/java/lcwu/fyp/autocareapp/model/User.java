@@ -3,6 +3,8 @@ package lcwu.fyp.autocareapp.model;
 public class User {
     private String phone, firstName, lastName, email, id, type, experience, image;
     private int roll;
+    private double latidue,longitude;
+
 
     public User() {
 
@@ -80,7 +82,24 @@ public class User {
         this.roll = roll;
     }
 
-    public User(String phone, String firstName, String lastName, String email, String id, String type, String experience, String image, int roll) {
+    public double getLatidue() {
+        return latidue;
+    }
+
+    public void setLatidue(double latidue) {
+        this.latidue = latidue;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public User(String phone, String firstName, String lastName, String email, String id, String type, String experience, String image,
+                int roll, double latidue, double longitude) {
         this.phone = phone;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -90,5 +109,7 @@ public class User {
         this.experience = experience;
         this.image = image;
         this.roll = roll;
+        this.latidue = latidue;
+        this.longitude = longitude;
     }
 }

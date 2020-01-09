@@ -37,6 +37,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -52,7 +55,7 @@ import lcwu.fyp.autocareapp.model.User;
 
 public class ProviderDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
+    private DatabaseReference refrence = FirebaseDatabase.getInstance().getReference().child("Users");
     private MapView map;
     private Helpers helpers;
     private Session session;
@@ -61,7 +64,7 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
     private NavigationView navigationView;
     private User user;
     private CircleImageView profile_image;
-    private TextView profile_name, profile_email;
+    private TextView profile_name, profile_email, profile_phone, profile_type, profile_experience;
     private FusedLocationProviderClient locationProviderClient;
     private Marker marker;
     private TextView locationAddress;
@@ -90,10 +93,15 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
         profile_email = header.findViewById(R.id.profile_email);
         profile_name = header.findViewById(R.id.profile_name);
         profile_image = header.findViewById(R.id.profile_image);
+        profile_phone = header.findViewById(R.id.profile_phone);
+        profile_type = header.findViewById(R.id.profile_type);
+        profile_experience = header.findViewById(R.id.profile_experience);
         String name = user.getFirstName() + " " + user.getLastName();
         profile_name.setText(name);
         profile_email.setText(user.getEmail());
-
+        profile_type.setText(user.getType());
+        profile_phone.setText(user.getPhone());
+        profile_experience.setText("Experience: " + user.getExperience());
         locationAddress = findViewById(R.id.locationAddress);
         map = findViewById(R.id.map);
         map.onCreate(savedInstanceState);
@@ -149,10 +157,12 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
                         return true;
                     }
                 });
+                getDeviceLocation();
             }
         }
 
         private void getDeviceLocation(){
+        Log.e("Location", "Call received to get device location");
             try {
                 LocationManager lm =(LocationManager)getSystemService(Context.LOCATION_SERVICE);
                 boolean gps_enabled = false;
@@ -212,6 +222,7 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
                                             strAddress = strAddress + " " + address.getAddressLine(i);
                                         }
                                         locationAddress.setText(strAddress);
+                                        updateUserLocation(me.latitude, me.longitude);
                                     }
                                 } catch (Exception exception) {
                                     helpers.showError(ProviderDashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
@@ -303,5 +314,14 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
     protected void onPause() {
         super.onPause();
         map.onPause();
+    }
+
+    private void updateUserLocation(double lat, double lng)
+    {
+        Log.e("Location", "Lat: " + lat + " Lng: " + lng);
+        user.setLatidue(lat);
+        user.setLongitude(lng);
+        session.setSession(user);
+        refrence.child(user.getPhone()).setValue(user);
     }
 }
