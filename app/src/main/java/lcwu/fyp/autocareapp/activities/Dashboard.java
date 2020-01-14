@@ -356,9 +356,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                         LatLng user_location =new LatLng(u.getLatidue(),u.getLongitude());
                         MarkerOptions markerOptions = new MarkerOptions().position(user_location).title(u.getType());
                         if(u.getType().equals("Car Mechanic"))
-                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.car));
+                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.carmechanic));
                         else if(u.getType().equals("Bike Mechanic"))
-                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.bike));
+                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.bikemechanic));
                         else if(u.getType().equals("Petrol Provider"))
                             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.petrolpump));
                         Marker marker = googleMap.addMarker(markerOptions);
