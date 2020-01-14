@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".EditUserProfile"
+            android:name=".activities.EditUserProfile"
             android:label="@string/title_activity_edit_user_profile"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
