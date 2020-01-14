@@ -37,8 +37,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.shreyaspatil.MaterialDialog.MaterialDialog;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,11 +55,14 @@ import lcwu.fyp.autocareapp.director.Helpers;
 import lcwu.fyp.autocareapp.director.Session;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lcwu.fyp.autocareapp.director.Constants;
+import lcwu.fyp.autocareapp.model.Booking;
 import lcwu.fyp.autocareapp.model.User;
 
 public class ProviderDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    DatabaseReference booking_reference = FirebaseDatabase.getInstance().getReference().child("Bookings");
 
-    private DatabaseReference refrence = FirebaseDatabase.getInstance().getReference().child("Users");
+
+    private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
     private MapView map;
     private Helpers helpers;
     private Session session;
@@ -158,6 +165,7 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
                     }
                 });
                 getDeviceLocation();
+                listenToBooking();
             }
         }
 
@@ -322,6 +330,51 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
         user.setLatidue(lat);
         user.setLongitude(lng);
         session.setSession(user);
-        refrence.child(user.getPhone()).setValue(user);
+        reference.child(user.getPhone()).setValue(user);
+    }
+    private void listenToBooking()
+    {
+        booking_reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot data:dataSnapshot.getChildren()){
+                    Booking b = data.getValue(Booking.class);
+                    if(b!=null && b.getProviderId()!=null && b.getProviderId().length()<1)
+                    {
+                        showBookingDialog(b);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showBookingDialog(Booking booking){
+        final MaterialDialog dialog = new MaterialDialog.Builder(ProviderDashboard.this)
+                .setTitle("NEW BOOKING")
+                .setMessage("A NEW BOOKING HAS ARRIVED,DO YOU WANT TO EARN SOME MORE PROFIT?")
+                .setCancelable(false)
+                .setPositiveButton("SHOW DETAILS", R.drawable.ic_okay, new MaterialDialog.OnClickListener() {
+                    @Override
+                    public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
+                        dialogInterface.dismiss();
+                        Intent it = new Intent(ProviderDashboard.this, ShowBookingDetail.class);
+                        startActivity(it);
+                    }
+                })
+                .setNegativeButton("REJECT", R.drawable.ic_close, new MaterialDialog.OnClickListener() {
+                    @Override
+                    public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .build();
+        // Show Dialog
+        dialog.show();
     }
 }

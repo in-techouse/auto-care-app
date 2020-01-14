@@ -24,7 +24,7 @@
         <activity
             android:name=".activities.EditUserProfile"
             android:label="@string/title_activity_edit_user_profile"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -76,6 +76,10 @@
             android:name=".activities.ProviderDashboard"
             android:label="@string/title_activity_provider_dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ShowBookingDetail"
+            android:parentActivityName=".activities.ProviderDashboard"/>
+
     </application>
 
 </manifest>
