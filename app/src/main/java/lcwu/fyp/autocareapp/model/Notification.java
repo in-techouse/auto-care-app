@@ -1,6 +1,8 @@
 package lcwu.fyp.autocareapp.model;
 
-public class Notification {
+import java.io.Serializable;
+
+public class Notification implements Serializable {
     private String id,userId,providerId,bookingId,message;
 
     public String getId() {

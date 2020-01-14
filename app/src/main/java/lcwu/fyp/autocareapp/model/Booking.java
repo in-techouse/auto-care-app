@@ -1,8 +1,24 @@
 package lcwu.fyp.autocareapp.model;
 
-public class Booking {
+import java.io.Serializable;
+
+public class Booking implements Serializable {
     private String userId,providerId,status,type,date,id;
-    private Double latitude,longitude;
+    private double latitude,longitude;
+
+    public Booking(String userId, String providerId, String status, String type, String date, String id, double latitude, double longitude) {
+        this.userId = userId;
+        this.providerId = providerId;
+        this.status = status;
+        this.type = type;
+        this.date = date;
+        this.id = id;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public Booking() {
+    }
 
     public String getUserId() {
         return userId;
@@ -52,33 +68,19 @@ public class Booking {
         this.id = id;
     }
 
-    public Double getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public Double getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
-    }
-
-    public Booking(String userId, String providerId, String status, String type, String date, String id, Double latitude, Double longitude) {
-        this.userId = userId;
-        this.providerId = providerId;
-        this.status = status;
-        this.type = type;
-        this.date = date;
-        this.id = id;
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
-
-    public Booking() {
     }
 }

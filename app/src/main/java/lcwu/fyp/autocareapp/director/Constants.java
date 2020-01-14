@@ -11,7 +11,7 @@ public class Constants {
     public static final String ERROR = "ERROR!";
     public static final String ERROR_INVALID_OTP = "Enter valid OTP.";
     public static final String ERROR_SOMETHING_WENT_WRONG = "Something went wrong.\nPlease try again later.";
-
+    public static final String ERROR_CHECK_TYPE_FIRST = "Select Your Type First.";
     //SUCCESS MESSAGES
 
 
