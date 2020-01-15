@@ -339,7 +339,7 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot data:dataSnapshot.getChildren()){
                     Booking b = data.getValue(Booking.class);
-                    if(b!=null && b.getProviderId()!=null && b.getProviderId().length()<1)
+                    if(b!=null && b.getProviderId()!=null && b.getProviderId().length()<1 && b.getType().equals(user.getType()))
                     {
                         showBookingDialog(b);
                         break;
@@ -354,7 +354,7 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
         });
     }
 
-    private void showBookingDialog(Booking booking){
+    private void showBookingDialog(final Booking booking){
         final MaterialDialog dialog = new MaterialDialog.Builder(ProviderDashboard.this)
                 .setTitle("NEW BOOKING")
                 .setMessage("A NEW BOOKING HAS ARRIVED,DO YOU WANT TO EARN SOME MORE PROFIT?")
@@ -364,6 +364,9 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
                     public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
                         dialogInterface.dismiss();
                         Intent it = new Intent(ProviderDashboard.this, ShowBookingDetail.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Booking",booking);
+                        it.putExtras(bundle);
                         startActivity(it);
                     }
                 })

@@ -5,4 +5,6 @@
     <color name="colorAccent">#D3C1C7</color>
     <color name="dark_gray">#D3C1C7</color>
     <color name="colorTextWhite">#FFFFFF</color>
+    <color name="colorReject">#DA2B2B</color>
+    <color name="colorAccept">#377A08</color>
 </resources>
