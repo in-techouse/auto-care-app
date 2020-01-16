@@ -65,9 +65,18 @@ public class BookingActivity extends AppCompatActivity {
                     }
                 }
 
+                if(Data.size()>0){
+                    bookings.setVisibility(View.VISIBLE);
+                    noBooking.setVisibility(View.GONE);
+                }
+
+                else{
+                    noBooking.setVisibility(View.VISIBLE);
+                    bookings.setVisibility(View.GONE);
+
+                }
                 loading.setVisibility(View.GONE);
-                noBooking.setVisibility(View.GONE);
-                bookings.setVisibility(View.VISIBLE);
+
 
             }
 

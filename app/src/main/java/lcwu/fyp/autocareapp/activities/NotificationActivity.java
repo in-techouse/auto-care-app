@@ -65,9 +65,18 @@ public class NotificationActivity extends AppCompatActivity {
                     }
                 }
 
+                if(Data.size()>0){
+                    notifications.setVisibility(View.VISIBLE);
+                    noRecord.setVisibility(View.GONE);
+                }
+
+                else{
+                    noRecord.setVisibility(View.VISIBLE);
+                    notifications.setVisibility(View.GONE);
+
+                }
+
                 loading.setVisibility(View.GONE);
-                noRecord.setVisibility(View.GONE);
-                notifications.setVisibility(View.VISIBLE);
 
             }
 
