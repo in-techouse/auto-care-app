@@ -145,4 +145,8 @@
     </string>
     <string name="accept">ACCEPT</string>
     <string name="reject">REJECT</string>
+    <string name="no_notifications_found">No Notifications Found</string>
+    <string name="loading_notifications">Loading Notifications</string>
+    <string name="no_bookings_found">No Bookings Found</string>
+    <string name="loading_bookings">Loading Bookings</string>
 </resources>
