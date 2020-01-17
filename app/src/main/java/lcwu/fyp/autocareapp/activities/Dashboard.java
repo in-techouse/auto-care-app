@@ -20,7 +20,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -37,7 +36,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -51,9 +49,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -61,10 +57,9 @@ import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
 import lcwu.fyp.autocareapp.director.Session;
-import lcwu.fyp.autocareapp.model.Booking;
 import lcwu.fyp.autocareapp.model.User;
 
-public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private List<User> users;
     private DatabaseReference reference= FirebaseDatabase.getInstance().getReference().child("Users");
     private MapView map;
@@ -80,7 +75,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private Marker marker;
     private TextView locationAddress;
     private Spinner selecttype;
-    private CheckBox showmechanics, showpetrolpumps;
+    private CheckBox showmechanics,showpetrolpumps;
     private Button confirm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +97,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         showmechanics = findViewById(R.id.showmechanics);
         showpetrolpumps = findViewById(R.id.showpetrolpumps);
         confirm = findViewById(R.id.confirm);
-        confirm.setOnClickListener(this);
-        showmechanics.setOnClickListener(this);
-        showpetrolpumps.setOnClickListener(this);
 
         session = new Session(Dashboard.this);
         user = session.getUser();
@@ -124,6 +116,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         profile_phone.setText(user.getPhone());
 
         locationAddress = findViewById(R.id.locationAddress);
+
 
         map = findViewById(R.id.map);
         map.onCreate(savedInstanceState);
@@ -359,21 +352,23 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                     if(u != null){
                         LatLng user_location =new LatLng(u.getLatidue(),u.getLongitude());
                         MarkerOptions markerOptions = new MarkerOptions().position(user_location).title(u.getType());
-                        if(u.getType().equals("Car Mechanic"))
-                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.carmechanic));
-                        else if(u.getType().equals("Bike Mechanic"))
-                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.bikemechanic));
-                        else if(u.getType().equals("Petrol Provider"))
-                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.petrolpump));
+                        switch (u.getType()) {
+                            case "Car Mechanic":
+                                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.carmechanic));
+                                break;
+                            case "Bike Mechanic":
+                                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.bikemechanic));
+                                break;
+                            case "Petrol Provider":
+                                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.petrolpump));
+                                break;
+                        }
                         Marker marker = googleMap.addMarker(markerOptions);
                         marker.showInfoWindow();
                         marker.setTag(u);
                         Log.e("UserLocation", "Name: " + u.getFirstName() + " Lat: " + u.getLatidue() + " Lng: " + u.getLongitude());
                         users.add(u);
                     }
-
-
-
                 }
 
             }
@@ -386,47 +381,4 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
-    @Override
-    public void onClick(View view) {
-        int id= view.getId();
-        switch(id){
-            case R.id.confirm:{
-                if (selecttype.getSelectedItemPosition()==0){
-                    helpers.showError(Dashboard.this,Constants.ERROR_CHECK_TYPE_FIRST);
-                    return;
-                }
-                Booking booking=new Booking();
-                DatabaseReference reference =FirebaseDatabase.getInstance().getReference().child("Bookings");
-                String bid = reference.push().getKey();
-                booking.setId(bid);
-                booking.setUserId(user.getId());
-                booking.setProviderId("");
-                booking.setStatus("New");
-                booking.setType(selecttype.getSelectedItem().toString());
-                booking.setLatitude(0);
-                booking.setLongitude(0);
-                booking.setDate("");
-                reference.child(booking.getId()).setValue(booking).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-
-
-                break;
-            }
-            case R.id.showmechanics:{
-                break;
-            }
-            case R.id.showpetrolpumps:{
-                break;
-            }
-        }
-    }
 }
