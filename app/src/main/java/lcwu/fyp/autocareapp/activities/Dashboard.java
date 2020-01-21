@@ -50,18 +50,22 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
 import lcwu.fyp.autocareapp.director.Session;
+import lcwu.fyp.autocareapp.model.Booking;
 import lcwu.fyp.autocareapp.model.User;
 
-public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private List<User> users;
-    private DatabaseReference reference= FirebaseDatabase.getInstance().getReference().child("Users");
+    private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
     private MapView map;
     private Helpers helpers;
     private Session session;
@@ -381,4 +385,41 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id){
+            case R.id.confirm:{
+                if (selecttype.getSelectedItemPosition() == 0){
+                    helpers.showError(Dashboard.this, "Select your type first");
+                    return;
+                }
+                DatabaseReference bookingReference = FirebaseDatabase.getInstance().getReference().child("Bookings");
+                String key = bookingReference.push().getKey();
+                Booking booking = new Booking();
+                booking.setId(key);
+                booking.setUserId(user.getId());
+                Date d = new Date();
+                String date = new SimpleDateFormat("dddd DD, MMM, YYYY").format(d);
+                booking.setDate(date);
+                booking.setLatitude(marker.getPosition().latitude);
+                booking.setLongitude(marker.getPosition().longitude);
+                booking.setStatus("New");
+                booking.setType(selecttype.getSelectedItem().toString());
+                booking.setProviderId("");
+                bookingReference.child(booking.getId()).setValue(booking).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+                break;
+            }
+        }
+    }
 }
