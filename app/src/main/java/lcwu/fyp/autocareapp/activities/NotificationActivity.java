@@ -2,6 +2,7 @@ package lcwu.fyp.autocareapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lcwu.fyp.autocareapp.R;
+import lcwu.fyp.autocareapp.adapters.NotificationAdapter;
 import lcwu.fyp.autocareapp.director.Session;
 import lcwu.fyp.autocareapp.model.Booking;
 import lcwu.fyp.autocareapp.model.Notification;
@@ -33,6 +35,7 @@ public class NotificationActivity extends AppCompatActivity {
     private Session session;
     private User user;
     private List <Notification> Data;
+    private NotificationAdapter notificationAdapter;
     private DatabaseReference reference= FirebaseDatabase.getInstance().getReference().child("Notifications");
 
 
@@ -47,6 +50,10 @@ public class NotificationActivity extends AppCompatActivity {
         session = new Session(NotificationActivity.this);
         user = session.getUser();
         Data = new ArrayList<>();
+        notificationAdapter = new NotificationAdapter();
+        notifications.setLayoutManager(new LinearLayoutManager(NotificationActivity.this));
+        notifications.setAdapter(notificationAdapter);
+
         loadNotification();
     }
 
@@ -77,6 +84,7 @@ public class NotificationActivity extends AppCompatActivity {
                 }
 
                 loading.setVisibility(View.GONE);
+                notificationAdapter.setData(Data);
 
             }
 
