@@ -2,6 +2,9 @@ package lcwu.fyp.autocareapp.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,6 +37,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -355,6 +359,24 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
     }
 
     private void showBookingDialog(final Booking booking){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(ProviderDashboard.this, "1");
+        builder.setTicker("New Booking");
+        builder.setAutoCancel(true);
+        builder.setChannelId("1");
+        builder.setContentInfo("New Booking Found.");
+        builder.setContentTitle("New Booking Found.");
+        builder.setContentText("We have a new booking for you. It's time to get some revenue.");
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.build();
+        Intent notificationIntent = new Intent(ProviderDashboard.this, ShowBookingDetail.class);
+        PendingIntent conPendingIntent = PendingIntent.getActivity(this,0,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(conPendingIntent);
+        NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager != null) {
+            manager.notify(10,builder.build());
+        }
+
+
         final MaterialDialog dialog = new MaterialDialog.Builder(ProviderDashboard.this)
                 .setTitle("NEW BOOKING")
                 .setMessage("A NEW BOOKING HAS ARRIVED,DO YOU WANT TO EARN SOME MORE PROFIT?")
