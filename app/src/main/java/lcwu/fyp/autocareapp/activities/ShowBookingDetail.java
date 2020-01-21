@@ -69,6 +69,7 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
         Intent it = getIntent();
         if(it==null)
         {
+            Log.e("BookingDetail", "Intent is NULL");
             finish();
             return;
 
@@ -76,6 +77,7 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
         Bundle b = it.getExtras();
         if (b==null)
         {
+            Log.e("BookingDetail", "Extra is NULL");
             finish();
             return;
         }
@@ -83,6 +85,7 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
         booking = (Booking) b.getSerializable("Booking");
         if (booking==null)
         {
+            Log.e("BookingDetail", "Booking is NULL");
             finish();
             return;
         }

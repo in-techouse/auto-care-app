@@ -369,6 +369,9 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.build();
         Intent notificationIntent = new Intent(ProviderDashboard.this, ShowBookingDetail.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Booking",booking);
+        notificationIntent.putExtras(bundle);
         PendingIntent conPendingIntent = PendingIntent.getActivity(this,0,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(conPendingIntent);
         NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
@@ -379,7 +382,7 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
 
         final MaterialDialog dialog = new MaterialDialog.Builder(ProviderDashboard.this)
                 .setTitle("NEW BOOKING")
-                .setMessage("A NEW BOOKING HAS ARRIVED,DO YOU WANT TO EARN SOME MORE PROFIT?")
+                .setMessage("A NEW BOOKING HAS ARRIVED, DO YOU WANT TO EARN SOME MORE PROFIT?")
                 .setCancelable(false)
                 .setPositiveButton("SHOW DETAILS", R.drawable.ic_okay, new MaterialDialog.OnClickListener() {
                     @Override
