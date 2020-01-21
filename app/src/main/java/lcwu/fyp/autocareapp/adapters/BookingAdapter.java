@@ -1,5 +1,6 @@
 package lcwu.fyp.autocareapp.adapters;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.model.Booking;
 import lcwu.fyp.autocareapp.model.Notification;
 
@@ -29,11 +31,17 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingH
     @NonNull
     @Override
     public BookingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_booking,parent);
+        return new BookingHolder(v);
+
+
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull BookingHolder holder, int position) {
+        final Booking b = Data.get(position);
+
 
     }
 

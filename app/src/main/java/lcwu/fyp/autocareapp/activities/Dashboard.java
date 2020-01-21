@@ -398,6 +398,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 String key = bookingReference.push().getKey();
                 Booking booking = new Booking();
                 booking.setId(key);
+
+
                 booking.setUserId(user.getId());
                 Date d = new Date();
                 String date = new SimpleDateFormat("dddd DD, MMM, YYYY").format(d);

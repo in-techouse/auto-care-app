@@ -2,6 +2,7 @@ package lcwu.fyp.autocareapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lcwu.fyp.autocareapp.R;
+import lcwu.fyp.autocareapp.adapters.BookingAdapter;
 import lcwu.fyp.autocareapp.director.Session;
 import lcwu.fyp.autocareapp.model.Booking;
 import lcwu.fyp.autocareapp.model.User;
@@ -34,6 +36,7 @@ public class BookingActivity extends AppCompatActivity {
     private User user;
     private List <Booking> Data;
     private DatabaseReference reference= FirebaseDatabase.getInstance().getReference().child("Bookings");
+    private BookingAdapter bookingAdapter;
 
 
     @Override
@@ -46,6 +49,9 @@ public class BookingActivity extends AppCompatActivity {
         bookings = findViewById(R.id.bookings);
         session = new Session(BookingActivity.this);
         user = session.getUser();
+        bookingAdapter=new BookingAdapter();
+        bookings.setLayoutManager(new LinearLayoutManager(BookingActivity.this));
+        bookings.setAdapter(bookingAdapter);
         Data = new ArrayList<>();
         loadBookings();
     }
@@ -75,8 +81,9 @@ public class BookingActivity extends AppCompatActivity {
                     bookings.setVisibility(View.GONE);
 
                 }
-                loading.setVisibility(View.GONE);
 
+                loading.setVisibility(View.GONE);
+                bookingAdapter.setData(Data);
 
             }
 
