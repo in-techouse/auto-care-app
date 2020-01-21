@@ -40,6 +40,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull NotificationHolder holder, int position) {
         final Notification n = Data.get(position);
 
+
     }
 
     @Override
