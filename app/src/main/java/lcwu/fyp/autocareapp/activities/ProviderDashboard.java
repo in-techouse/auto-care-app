@@ -367,6 +367,8 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
         builder.setContentTitle("New Booking Found.");
         builder.setContentText("We have a new booking for you. It's time to get some revenue.");
         builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+        builder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
         builder.build();
         Intent notificationIntent = new Intent(ProviderDashboard.this, ShowBookingDetail.class);
         Bundle bundle = new Bundle();
