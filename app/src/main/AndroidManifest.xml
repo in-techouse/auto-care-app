@@ -79,6 +79,11 @@
             android:label="@string/title_activity_edit_user_profile"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.Dashboard"/>
+        <activity
+            android:name=".activities.ShowBookingDetail"
+            android:label="@string/booking_details"
+            android:parentActivityName=".activities.ProviderDashboard"/>
+
     </application>
 
 </manifest>

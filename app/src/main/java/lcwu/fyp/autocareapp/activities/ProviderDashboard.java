@@ -386,7 +386,7 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
                 .setTitle("NEW BOOKING")
                 .setMessage("A NEW BOOKING HAS ARRIVED, DO YOU WANT TO EARN SOME MORE PROFIT?")
                 .setCancelable(false)
-                .setPositiveButton("SHOW DETAILS", R.drawable.ic_okay, new MaterialDialog.OnClickListener() {
+                .setPositiveButton("DETAILS", R.drawable.ic_okay, new MaterialDialog.OnClickListener() {
                     @Override
                     public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
                         dialogInterface.dismiss();

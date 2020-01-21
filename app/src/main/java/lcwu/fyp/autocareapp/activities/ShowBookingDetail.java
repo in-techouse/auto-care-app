@@ -51,7 +51,7 @@ import lcwu.fyp.autocareapp.model.User;
 
 public class ShowBookingDetail extends AppCompatActivity implements View.OnClickListener{
     private Booking booking;
-    private TextView UserName,address,travel;
+    private TextView UserName,user_address,travel, YourAddress;
     private Button reject,accept;
     private MapView map;
     private GoogleMap googleMap;
@@ -90,12 +90,12 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
             return;
         }
         UserName = findViewById(R.id.userName);
-        address = findViewById(R.id.address);
+        user_address = findViewById(R.id.address);
         reject = findViewById(R.id.REJECT);
         accept = findViewById(R.id.ACCEPT);
         map = findViewById(R.id.map);
         travel = findViewById(R.id.Travel);
-
+        YourAddress = findViewById(R.id.your_address);
         accept.setOnClickListener(this);
         reject.setOnClickListener(this);
 
@@ -208,25 +208,42 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
                         if (location != null) {
                             googleMap.clear();
                             LatLng me = new LatLng(location.getLatitude(), location.getLongitude());
-                            providerMarker = googleMap.addMarker(new MarkerOptions().position(me).title("You're Here")
-                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                            providerMarker = googleMap.addMarker(new MarkerOptions().position(me).title("You're Here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                            LatLng customerlocation = new LatLng(booking.getLatitude(), booking.getLongitude());
+                            userMarker = googleMap.addMarker(new MarkerOptions().position(customerlocation).title("Customer Is Here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(me, 11));
-//                            Geocoder geocoder = new Geocoder(ProviderDashboard.this);
-//                            List<Address> addresses = null;
-//                            try {
-//                                addresses = geocoder.getFromLocation(me.latitude, me.longitude, 1);
-//                                if (addresses != null && addresses.size() > 0) {
-//                                    Address address = addresses.get(0);
-//                                    String strAddress = "";
-//                                    for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
-//                                        strAddress = strAddress + " " + address.getAddressLine(i);
-//                                    }
-//                                    locationAddress.setText(strAddress);
-//                                    updateUserLocation(me.latitude, me.longitude);
-//                                }
-//                            } catch (Exception exception) {
-//                                helpers.showError(ProviderDashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
-//                            }
+                            Geocoder geocoder = new Geocoder(ShowBookingDetail.this);
+                            List<Address> addresses = null;
+                            try {
+                                // Get Provider Current Address
+                                addresses = geocoder.getFromLocation(me.latitude, me.longitude, 1);
+                                if (addresses != null && addresses.size() > 0) {
+                                    Address address = addresses.get(0);
+                                    String strAddress = "";
+                                    for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                                        strAddress = strAddress + " " + address.getAddressLine(i);
+                                    }
+                                    YourAddress.setText(strAddress);
+                                }
+
+                                // Get Customer Address
+                                addresses = geocoder.getFromLocation(customerlocation.latitude, customerlocation.longitude, 1);
+                                if (addresses != null && addresses.size() > 0) {
+                                    Address address = addresses.get(0);
+                                    String strAddress = "";
+                                    for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                                        strAddress = strAddress + " " + address.getAddressLine(i);
+                                    }
+                                    user_address.setText(strAddress);
+                                }
+                                else{
+                                    Log.e("BookingDetail", "User Address is Null");
+                                }
+
+                            } catch (Exception exception) {
+                              helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+                           }
                         }
                     }
                 }

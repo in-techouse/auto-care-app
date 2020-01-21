@@ -28,12 +28,20 @@
         app:cardCornerRadius="13dp">
 
         <LinearLayout
-
             android:orientation="vertical"
             android:background="@color/colorTextWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp">
+            <TextView
+                android:textStyle="bold"
+                android:text="User Name"
+                android:layout_marginStart="@dimen/mp3"
+                android:layout_marginEnd="@dimen/mp3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mp3"
+                android:layout_marginBottom="@dimen/mp3" />
             <TextView
                 android:layout_marginStart="@dimen/mp3"
                 android:layout_marginEnd="@dimen/mp3"
@@ -43,6 +51,15 @@
                 android:layout_marginBottom="@dimen/mp3"
                 android:id="@+id/userName"/>
             <TextView
+                android:textStyle="bold"
+                android:text="User Location"
+                android:layout_marginStart="@dimen/mp3"
+                android:layout_marginEnd="@dimen/mp3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mp3"
+                android:layout_marginBottom="@dimen/mp3" />
+            <TextView
                 android:layout_marginStart="@dimen/mp3"
                 android:layout_marginEnd="@dimen/mp3"
                 android:layout_width="match_parent"
@@ -50,6 +67,23 @@
                 android:layout_marginTop="@dimen/mp3"
                 android:layout_marginBottom="@dimen/mp3"
                 android:id="@+id/address"/>
+            <TextView
+                android:textStyle="bold"
+                android:text="Your Location"
+                android:layout_marginStart="@dimen/mp3"
+                android:layout_marginEnd="@dimen/mp3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mp3"
+                android:layout_marginBottom="@dimen/mp3" />
+            <TextView
+                android:layout_marginStart="@dimen/mp3"
+                android:layout_marginEnd="@dimen/mp3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mp3"
+                android:layout_marginBottom="@dimen/mp3"
+                android:id="@+id/your_address"/>
             <RelativeLayout
                 android:layout_marginStart="@dimen/mp3"
                 android:layout_marginEnd="@dimen/mp3"
@@ -65,8 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/Travel"
-                    android:layout_alignParentEnd="true"
-                    />
+                    android:layout_alignParentEnd="true" />
 
             </RelativeLayout>
             <LinearLayout
