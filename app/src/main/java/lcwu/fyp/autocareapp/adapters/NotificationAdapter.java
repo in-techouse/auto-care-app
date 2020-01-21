@@ -41,6 +41,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         final Notification n = Data.get(position);
 
 
+
     }
 
     @Override
