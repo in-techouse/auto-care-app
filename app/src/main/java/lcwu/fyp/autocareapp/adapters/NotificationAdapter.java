@@ -3,20 +3,15 @@ package lcwu.fyp.autocareapp.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.model.Notification;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationHolder>
 {
-
-
     private List<Notification> Data;
 
     public NotificationAdapter() {
@@ -30,8 +25,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @NonNull
     @Override
-    public NotificationHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
+    public NotificationHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View V = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notification,parent);
         return new NotificationHolder(V);
     }
@@ -39,9 +33,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public void onBindViewHolder(@NonNull NotificationHolder holder, int position) {
         final Notification n = Data.get(position);
-
-
-
     }
 
     @Override
