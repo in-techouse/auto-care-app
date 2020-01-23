@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.security.PrivateKey;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lcwu.fyp.autocareapp.R;
@@ -63,28 +65,27 @@ public class BookingActivity extends AppCompatActivity {
         reference.orderByChild("userId").equalTo(user.getPhone()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                Log.e("Bookings", "Data Snap Shot: " + dataSnapshot.toString());
                 for(DataSnapshot d: dataSnapshot.getChildren()){
                     Booking b = d.getValue(Booking.class);
                     if(b!=null){
                         Data.add(b);
                     }
                 }
-
+                Collections.reverse(Data);
+                Log.e("Bookings", "Data List Size: " + Data.size());
                 if(Data.size()>0){
+                    Log.e("Bookings", "If, list visible");
                     bookings.setVisibility(View.VISIBLE);
                     noBooking.setVisibility(View.GONE);
                 }
-
                 else{
+                    Log.e("Bookings", "Else, list invisible");
                     noBooking.setVisibility(View.VISIBLE);
                     bookings.setVisibility(View.GONE);
-
                 }
-
                 loading.setVisibility(View.GONE);
                 bookingAdapter.setData(Data);
-
             }
 
             @Override

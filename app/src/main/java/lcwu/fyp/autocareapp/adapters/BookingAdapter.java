@@ -1,8 +1,11 @@
 package lcwu.fyp.autocareapp.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingH
     }
 
     public void setData(List<Booking> data) {
+        Log.e("Bookings", "Data set to adapter");
         Data = data;
         notifyDataSetChanged();
     }
@@ -27,24 +31,32 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingH
     @NonNull
     @Override
     public BookingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_booking,parent);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_booking,parent, false);
         return new BookingHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BookingHolder holder, int position) {
         final Booking b = Data.get(position);
+        holder.date.setText(b.getDate());
+        holder.type.setText(b.getType());
+
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return Data.size();
     }
 
     class BookingHolder extends RecyclerView.ViewHolder {
+        TextView date,type;
 
         public BookingHolder(@NonNull View itemView) {
             super(itemView);
+            date=itemView.findViewById(R.id.date);
+            type=itemView.findViewById(R.id.type);
+
         }
     }
 }

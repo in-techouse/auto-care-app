@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lcwu.fyp.autocareapp.R;
@@ -71,6 +72,7 @@ public class NotificationActivity extends AppCompatActivity {
                         Data.add(n);
                     }
                 }
+                Collections.reverse(Data);
 
                 if(Data.size()>0){
                     notifications.setVisibility(View.VISIBLE);

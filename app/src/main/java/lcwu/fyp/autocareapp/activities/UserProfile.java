@@ -35,20 +35,20 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-//        Intent intent = getIntent();
-//        if(intent == null){
-//            finish();
-//            return;
-//        }
-//
-//        Bundle bundle = intent.getExtras();
-//        if(bundle == null){
-//            finish();
-//            return;
-//        }
-//
-//        strPhoneNo = bundle.getString("phone");
-        strPhoneNo = "";
+        Intent intent = getIntent();
+        if(intent == null){
+            finish();
+            return;
+        }
+
+        Bundle bundle = intent.getExtras();
+        if(bundle == null){
+            finish();
+            return;
+        }
+
+        strPhoneNo = bundle.getString("phone");
+//        strPhoneNo = "";
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);

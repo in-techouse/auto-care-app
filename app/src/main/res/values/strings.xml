@@ -150,4 +150,5 @@
     <string name="no_bookings_found">No Bookings Found</string>
     <string name="loading_bookings">Loading Bookings</string>
     <string name="booking_details">Booking Detail</string>
+    <string name="connecting_you_to_nearby_drivers">Connecting you to nearby drivers</string>
 </resources>

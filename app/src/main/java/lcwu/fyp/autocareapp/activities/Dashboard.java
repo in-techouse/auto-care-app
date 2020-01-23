@@ -47,6 +47,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -81,6 +82,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private Spinner selecttype;
     private CheckBox showmechanics,showpetrolpumps;
     private Button confirm;
+    private LinearLayout searching;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +103,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         showmechanics = findViewById(R.id.showmechanics);
         showpetrolpumps = findViewById(R.id.showpetrolpumps);
         confirm = findViewById(R.id.confirm);
+        confirm.setOnClickListener(this);
+        searching = findViewById(R.id.searching);
 
         session = new Session(Dashboard.this);
         user = session.getUser();
@@ -374,12 +378,11 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                         users.add(u);
                     }
                 }
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
             }
         });
 
@@ -390,34 +393,45 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         int id = v.getId();
         switch (id){
             case R.id.confirm:{
+                if(!helpers.isConnected(Dashboard.this)){
+                    helpers.showNoInternetError(Dashboard.this);
+                    return;
+                }
                 if (selecttype.getSelectedItemPosition() == 0){
                     helpers.showError(Dashboard.this, "Select your type first");
                     return;
                 }
+                searching.setVisibility(View.VISIBLE);
+                confirm.setVisibility(View.GONE);
+                selecttype.setVisibility(View.GONE);
                 DatabaseReference bookingReference = FirebaseDatabase.getInstance().getReference().child("Bookings");
                 String key = bookingReference.push().getKey();
                 Booking booking = new Booking();
                 booking.setId(key);
-
-
-                booking.setUserId(user.getId());
+                booking.setUserId(user.getPhone());
                 Date d = new Date();
-                String date = new SimpleDateFormat("dddd DD, MMM, YYYY").format(d);
+                String date = new SimpleDateFormat("EEE DD, MMM, yyyy HH:mm").format(d);
                 booking.setDate(date);
                 booking.setLatitude(marker.getPosition().latitude);
                 booking.setLongitude(marker.getPosition().longitude);
                 booking.setStatus("New");
                 booking.setType(selecttype.getSelectedItem().toString());
                 booking.setProviderId("");
+                booking.setAddres("");
                 bookingReference.child(booking.getId()).setValue(booking).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+                        searching.setVisibility(View.GONE);
+                        confirm.setVisibility(View.VISIBLE);
+                        selecttype.setVisibility(View.VISIBLE);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        searching.setVisibility(View.GONE);
+                        confirm.setVisibility(View.VISIBLE);
+                        selecttype.setVisibility(View.VISIBLE);
+                        helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
                     }
                 });
                 break;
