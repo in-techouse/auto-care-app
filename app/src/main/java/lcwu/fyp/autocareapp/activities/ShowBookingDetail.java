@@ -39,6 +39,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -59,8 +64,7 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
     private FusedLocationProviderClient locationProviderClient;
     private Helpers helpers;
     private Session session;
-    private User user;
-
+    private User user, customer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,7 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
         user = session.getUser();
         helpers = new Helpers();
 
+        loaduserdata();
         locationProviderClient = LocationServices.getFusedLocationProviderClient(ShowBookingDetail.this);
         map.onCreate(savedInstanceState);
         try {
@@ -131,6 +136,37 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
         catch (Exception e){
             helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG );
         }
+    }
+    private void loaduserdata(){
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(booking.getUserId());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue()!=null){
+                    customer = dataSnapshot.getValue(User.class);
+                    if (customer!=null){
+                        UserName.setText(customer.getFirstName()+" "+customer.getLastName());
+
+                    }
+                    else{
+                        UserName.setText("customer is null");
+                    }
+                }
+                else{
+                    UserName.setText("Data Snap is null");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
     }
 
     private boolean askForPermission(){
@@ -240,6 +276,9 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
                                 else{
                                     Log.e("BookingDetail", "User Address is Null");
                                 }
+
+                                double distance = helpers.distance(me.latitude,me.longitude, customerlocation.latitude,customerlocation.longitude);
+                                travel.setText(distance+" KM" );
 
                             } catch (Exception exception) {
                               helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG);
