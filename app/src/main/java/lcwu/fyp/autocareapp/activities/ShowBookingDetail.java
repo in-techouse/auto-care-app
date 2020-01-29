@@ -324,13 +324,13 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
                             Booking temp=dataSnapshot.getValue(Booking.class);
                             if(temp !=null)
                             {
-                                if (temp.getProviderId()!=null && temp.getProviderId().equals(""))
+                                if (temp.getProviderId() == null || temp.getProviderId().equals(""))
                                 {
                                     temp.setProviderId(user.getId());
-                                    temp.setStatus("In Progress" );
+                                    temp.setStatus("In Progress");
                                     acceptBooking(temp);
                                 }
-                                  else
+                                else
                                 {
                                     buttons.setVisibility(View.VISIBLE);
                                     progress.setVisibility(View.GONE);
