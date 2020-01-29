@@ -4,25 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.adapters.BookingAdapter;
 import lcwu.fyp.autocareapp.director.Session;
@@ -94,7 +89,7 @@ public class BookingActivity extends AppCompatActivity {
                 bookings.setVisibility(View.GONE);
 
             }
-        }
+        });
     }
 
     @Override

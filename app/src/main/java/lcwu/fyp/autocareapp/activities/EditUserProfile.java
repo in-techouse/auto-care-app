@@ -3,24 +3,18 @@ package lcwu.fyp.autocareapp.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Helpers;
 import lcwu.fyp.autocareapp.director.Session;
@@ -72,6 +66,9 @@ public class EditUserProfile extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 10){
             if (resultCode == RESULT_OK){
+                if(data == null){
+                    return;
+                }
                 Uri image = data.getData();
                 if (image != null){
                     Glide.with(EditUserProfile.this).load(image).into(img);

@@ -3,7 +3,6 @@ package lcwu.fyp.autocareapp.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -20,10 +19,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -45,9 +46,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.List;
-
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
@@ -67,7 +66,8 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
     private Session session;
     private User user, customer;
     private LinearLayout progress,buttons;
-    private DatabaseReference refrence=FirebaseDatabase.getInstance().getReference();
+    private ImageView userImage;
+    private DatabaseReference refrence = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,11 +96,13 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
             finish();
             return;
         }
-        progress=findViewById(R.id.progress);
-        buttons=findViewById(R.id.buttons);
+        progress = findViewById(R.id.progress);
+        buttons = findViewById(R.id.buttons);
+        buttons.setVisibility(View.GONE);
+        progress.setVisibility(View.VISIBLE);
 
-        progress.setVisibility(View.GONE);
         UserName = findViewById(R.id.userName);
+        userImage = findViewById(R.id.userImage);
         user_address = findViewById(R.id.address);
         reject = findViewById(R.id.REJECT);
         accept = findViewById(R.id.ACCEPT);
@@ -154,19 +156,31 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
                     customer = dataSnapshot.getValue(User.class);
                     if (customer!=null){
                         UserName.setText(customer.getFirstName()+" "+customer.getLastName());
+                        buttons.setVisibility(View.VISIBLE);
+                        progress.setVisibility(View.GONE);
+                        if(customer.getImage() != null && user.getImage().length() > 0){
+                            Glide.with(ShowBookingDetail.this).load(customer.getImage()).into(userImage);
+                        }
                     }
                     else{
-                        UserName.setText("customer is null");
+                        UserName.setText("");
+                        buttons.setVisibility(View.VISIBLE);
+                        progress.setVisibility(View.GONE);
+
                     }
                 }
                 else{
-                    UserName.setText("Data Snap is null");
+                    UserName.setText("");
+                    buttons.setVisibility(View.VISIBLE);
+                    progress.setVisibility(View.GONE);
+
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                buttons.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
             }
         });
     }

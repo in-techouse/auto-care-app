@@ -20,11 +20,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.adapters.NotificationAdapter;
 import lcwu.fyp.autocareapp.director.Session;
-import lcwu.fyp.autocareapp.model.Booking;
 import lcwu.fyp.autocareapp.model.Notification;
 import lcwu.fyp.autocareapp.model.User;
 

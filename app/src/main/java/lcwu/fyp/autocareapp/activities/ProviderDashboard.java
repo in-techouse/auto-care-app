@@ -2,7 +2,6 @@ package lcwu.fyp.autocareapp.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -47,7 +46,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
-
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -63,9 +61,7 @@ import lcwu.fyp.autocareapp.model.Booking;
 import lcwu.fyp.autocareapp.model.User;
 
 public class ProviderDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    DatabaseReference booking_reference = FirebaseDatabase.getInstance().getReference().child("Bookings");
-
-
+    private DatabaseReference booking_reference = FirebaseDatabase.getInstance().getReference().child("Bookings");
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
     private MapView map;
     private Helpers helpers;

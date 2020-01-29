@@ -33,23 +33,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp">
-            <TextView
-                android:textStyle="bold"
-                android:text="User Name"
-                android:layout_marginStart="@dimen/mp3"
-                android:layout_marginEnd="@dimen/mp3"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mp3"
-                android:layout_marginBottom="@dimen/mp3" />
-            <TextView
-                android:layout_marginStart="@dimen/mp3"
-                android:layout_marginEnd="@dimen/mp3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mp3"
-                android:layout_marginBottom="@dimen/mp3"
-                android:id="@+id/userName"/>
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_width="@dimen/mp60"
+                    android:layout_height="@dimen/mp60"
+                    android:src="@drawable/user"
+                    android:id="@+id/userImage"/>
+                <TextView
+                    android:id="@+id/userNameLabel"
+                    android:layout_toEndOf="@id/userImage"
+                    android:textStyle="bold"
+                    android:text="User Name"
+                    android:layout_marginStart="@dimen/mp3"
+                    android:layout_marginEnd="@dimen/mp3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mp3"
+                    android:layout_marginBottom="@dimen/mp3" />
+                <TextView
+                    android:layout_below="@id/userNameLabel"
+                    android:layout_toEndOf="@id/userImage"
+                    android:layout_marginStart="@dimen/mp3"
+                    android:layout_marginEnd="@dimen/mp3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mp3"
+                    android:layout_marginBottom="@dimen/mp3"
+                    android:id="@+id/userName"/>
+            </RelativeLayout>
+
             <TextView
                 android:textStyle="bold"
                 android:text="User Location"

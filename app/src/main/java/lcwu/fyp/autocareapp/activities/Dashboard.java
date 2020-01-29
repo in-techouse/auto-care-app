@@ -358,8 +358,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         user.setLongitude(lng);
         session.setSession(user);
         reference.child(user.getPhone()).setValue(user);
-
-
     }
 
     private void getOnProviders() {
@@ -451,7 +449,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     }
 
     private void listenToNotifications() {
-        reference.orderByChild("userId").equalTo(user.getPhone()).addValueEventListener(new ValueEventListener() {
+        notificationRefrence.orderByChild("userId").equalTo(user.getPhone()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {

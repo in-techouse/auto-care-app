@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.FirebaseDatabase;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,7 +46,6 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
         }
 
         strPhoneNo = bundle.getString("phone");
-//        strPhoneNo = "";
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
