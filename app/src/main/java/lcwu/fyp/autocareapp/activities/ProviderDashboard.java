@@ -279,7 +279,7 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
                 break;
             }
             case R.id.nav_userProfile:{
-                Intent it = new Intent(ProviderDashboard.this,UserProfile.class);
+                Intent it = new Intent(ProviderDashboard.this,EditUserProfile.class);
                 startActivity(it);
                 break;
             }

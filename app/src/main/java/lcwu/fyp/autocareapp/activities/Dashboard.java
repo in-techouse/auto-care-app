@@ -303,7 +303,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 break;
             }
             case R.id.nav_userProfile: {
-                Intent it = new Intent(Dashboard.this, UserProfile.class);
+                Intent it = new Intent(Dashboard.this, EditUserProfile.class);
                 startActivity(it);
                 break;
             }
