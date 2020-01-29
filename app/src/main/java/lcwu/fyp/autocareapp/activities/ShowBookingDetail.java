@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -65,6 +66,8 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
     private Helpers helpers;
     private Session session;
     private User user, customer;
+    private LinearLayout progress,buttons;
+    private DatabaseReference refrence=FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,10 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
             finish();
             return;
         }
+        progress=findViewById(R.id.progress);
+        buttons=findViewById(R.id.buttons);
+
+        progress.setVisibility(View.GONE);
         UserName = findViewById(R.id.userName);
         user_address = findViewById(R.id.address);
         reject = findViewById(R.id.REJECT);
@@ -307,12 +314,73 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
         int id = v.getId();
         switch (id){
             case R.id.ACCEPT:{
+                buttons.setVisibility(View.GONE);
+                progress.setVisibility(View.VISIBLE);
+                refrence.child("Bookings").child(booking.getId()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue()!=null)
+                        {
+                            Booking temp=dataSnapshot.getValue(Booking.class);
+                            if(temp !=null)
+                            {
+                                if (temp.getProviderId()!=null && temp.getProviderId().equals(""))
+                                {
+                                    temp.setProviderId(user.getId());
+                                    temp.setStatus("In Progress" );
+                                    acceptBooking(temp);
+                                }
+                                  else
+                                {
+                                    buttons.setVisibility(View.VISIBLE);
+                                    progress.setVisibility(View.GONE);
+                                    helpers.showError(ShowBookingDetail.this, "THE BOOKING HAS BEEN ACCEPTED BY ANOTHER PROVIDER");
+                                }
+                            }
+                            else {
+                                buttons.setVisibility(View.VISIBLE);
+                                progress.setVisibility(View.GONE);
+                                helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+                            }
+                        }
+                        else{
+                            buttons.setVisibility(View.VISIBLE);
+                            progress.setVisibility(View.GONE);
+                            helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        buttons.setVisibility(View.VISIBLE);
+                        progress.setVisibility(View.GONE);
+                        helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+                    }
+                });
+
                 break;
             }
             case R.id.REJECT:{
+                finish();
                 break;
             }
         }
+    }
+    private void acceptBooking(Booking b)
+    {
+        refrence.child("Bookings").child(b.getId()).setValue(b).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                buttons.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
+                helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            }
+        });
     }
 
     @Override
