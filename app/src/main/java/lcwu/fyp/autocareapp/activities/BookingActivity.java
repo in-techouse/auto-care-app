@@ -66,20 +66,19 @@ public class BookingActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.e("Bookings", "Data Snap Shot: " + dataSnapshot.toString());
-                for(DataSnapshot d: dataSnapshot.getChildren()){
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
                     Booking b = d.getValue(Booking.class);
-                    if(b!=null){
+                    if (b != null) {
                         Data.add(b);
                     }
                 }
                 Collections.reverse(Data);
                 Log.e("Bookings", "Data List Size: " + Data.size());
-                if(Data.size()>0){
+                if (Data.size() > 0) {
                     Log.e("Bookings", "If, list visible");
                     bookings.setVisibility(View.VISIBLE);
                     noBooking.setVisibility(View.GONE);
-                }
-                else{
+                } else {
                     Log.e("Bookings", "Else, list invisible");
                     noBooking.setVisibility(View.VISIBLE);
                     bookings.setVisibility(View.GONE);
@@ -95,7 +94,7 @@ public class BookingActivity extends AppCompatActivity {
                 bookings.setVisibility(View.GONE);
 
             }
-        });
+        }
     }
 
     @Override
