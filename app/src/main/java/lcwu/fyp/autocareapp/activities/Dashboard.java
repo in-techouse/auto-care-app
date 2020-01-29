@@ -2,6 +2,8 @@ package lcwu.fyp.autocareapp.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,7 +38,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shreyaspatil.MaterialDialog.MaterialDialog;
+
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,6 +67,7 @@ import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
 import lcwu.fyp.autocareapp.director.Session;
 import lcwu.fyp.autocareapp.model.Booking;
+import lcwu.fyp.autocareapp.model.Notification;
 import lcwu.fyp.autocareapp.model.User;
 
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -80,9 +86,11 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private Marker marker;
     private TextView locationAddress;
     private Spinner selecttype;
-    private CheckBox showmechanics,showpetrolpumps;
+    private CheckBox showmechanics, showpetrolpumps;
     private Button confirm;
     private LinearLayout searching;
+    private DatabaseReference notificationRefrence = FirebaseDatabase.getInstance().getReference().child("Notifications");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +104,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        users=new ArrayList<>();
+        users = new ArrayList<>();
 
 
         selecttype = findViewById(R.id.selecttype);
@@ -143,36 +151,39 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                     rlp.setMargins(0, 350, 100, 0);
 
                     googleMap = gM;
-                    LatLng defaultPosition = new LatLng(31.5204,74.3487) ;
-                    CameraPosition cameraPosition =new CameraPosition.Builder().target(defaultPosition).zoom(12).build();
+                    LatLng defaultPosition = new LatLng(31.5204, 74.3487);
+                    CameraPosition cameraPosition = new CameraPosition.Builder().target(defaultPosition).zoom(12).build();
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     enableLocation();
+
                 }
             });
+
+        } catch (Exception e) {
+            helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
         }
 
-        catch (Exception e){
-          helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG );
-        }
     }
-    private boolean askForPermission(){
+
+    private boolean askForPermission() {
         if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(Dashboard.this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                && ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(Dashboard.this, new String[]{
                     Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 10);
             return false;
         }
         return true;
     }
-    public void enableLocation(){
-        if(askForPermission()){
+
+    public void enableLocation() {
+        if (askForPermission()) {
             googleMap.setMyLocationEnabled(true);
             googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                 @Override
                 public boolean onMyLocationButtonClick() {
                     FusedLocationProviderClient current = LocationServices.getFusedLocationProviderClient(Dashboard.this);
-                    current.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>(){
-                        public void onSuccess(Location location){
+                    current.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                        public void onSuccess(Location location) {
                             getDeviceLocation();
                         }
                     });
@@ -184,24 +195,23 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
-    private void getDeviceLocation(){
+    private void getDeviceLocation() {
         try {
-            LocationManager lm =(LocationManager)getSystemService(Context.LOCATION_SERVICE);
+            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             boolean gps_enabled = false;
             boolean network_enabled = false;
             try {
-                gps_enabled =lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            }
-            catch (Exception ex){
-                helpers.showError(Dashboard.this,Constants.ERROR_SOMETHING_WENT_WRONG);
+                gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            } catch (Exception ex) {
+                helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
             }
             try {
-                network_enabled=lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-            }catch (Exception ex){
-                helpers.showError(Dashboard.this,Constants.ERROR_SOMETHING_WENT_WRONG);
+                network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            } catch (Exception ex) {
+                helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
 
             }
-            if (!gps_enabled&& !network_enabled){
+            if (!gps_enabled && !network_enabled) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(Dashboard.this);
                 dialog.setMessage("Oppsss.Your Location Service is off.\n Please turn on your Location and Try again Later");
                 dialog.setPositiveButton("Let me On", new DialogInterface.OnClickListener() {
@@ -244,7 +254,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                                         strAddress = strAddress + " " + address.getAddressLine(i);
                                     }
                                     locationAddress.setText(strAddress);
-                                    updateUserLocation(me.latitude,me.longitude);
+                                    updateUserLocation(me.latitude, me.longitude);
                                 }
                             } catch (Exception exception) {
                                 helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
@@ -258,58 +268,58 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                     helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
                 }
             });
+        } catch (Exception e) {
+            helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
         }
-        catch (Exception e){
-            helpers.showError(Dashboard.this,Constants.ERROR_SOMETHING_WENT_WRONG);
-        }
+        listenToNotifications();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-       if (requestCode==10){
-           if (grantResults.length> 0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-               enableLocation();
-           }
-       }
+        if (requestCode == 10) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                enableLocation();
+            }
+        }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
-        Log.e("MenuItem", ""+id);
-        switch (id){
-            case R.id.nav_home:{
-                break; 
+        Log.e("MenuItem", "" + id);
+        switch (id) {
+            case R.id.nav_home: {
+                break;
             }
-            case R.id.nav_booking:{
-                Intent it = new Intent(Dashboard.this,BookingActivity.class);
+            case R.id.nav_booking: {
+                Intent it = new Intent(Dashboard.this, BookingActivity.class);
                 startActivity(it);
                 break;
             }
-            case R.id.nav_notification:{
-                Intent it = new Intent(Dashboard.this,NotificationActivity.class);
+            case R.id.nav_notification: {
+                Intent it = new Intent(Dashboard.this, NotificationActivity.class);
                 startActivity(it);
                 break;
             }
-            case R.id.nav_userProfile:{
-                Intent it = new Intent(Dashboard.this,UserProfile.class);
+            case R.id.nav_userProfile: {
+                Intent it = new Intent(Dashboard.this, UserProfile.class);
                 startActivity(it);
                 break;
             }
-            case R.id.nav_logout:{
-                FirebaseAuth auth  = FirebaseAuth.getInstance();
-                Session session=new Session(Dashboard.this);
+            case R.id.nav_logout: {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                Session session = new Session(Dashboard.this);
                 auth.signOut();
                 session.destroySession();
-                Intent it = new Intent(Dashboard.this,LoginActivity.class);
+                Intent it = new Intent(Dashboard.this, LoginActivity.class);
                 it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(it);
                 finish();
                 break;
             }
-            case R.id.became_a_provider:{
-                Intent it = new Intent(Dashboard.this,BecameProvider.class);
+            case R.id.became_a_provider: {
+                Intent it = new Intent(Dashboard.this, BecameProvider.class);
                 startActivity(it);
                 break;
             }
@@ -343,7 +353,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         map.onPause();
     }
 
-    private void updateUserLocation(double lat,double lng){
+    private void updateUserLocation(double lat, double lng) {
         user.setLatidue(lat);
         user.setLongitude(lng);
         session.setSession(user);
@@ -351,14 +361,15 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
 
     }
-    private void getOnProviders(){
+
+    private void getOnProviders() {
         reference.orderByChild("roll").equalTo(1).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    User u=data.getValue(User.class);
-                    if(u != null){
-                        LatLng user_location =new LatLng(u.getLatidue(),u.getLongitude());
+                    User u = data.getValue(User.class);
+                    if (u != null) {
+                        LatLng user_location = new LatLng(u.getLatidue(), u.getLongitude());
                         MarkerOptions markerOptions = new MarkerOptions().position(user_location).title(u.getType());
                         switch (u.getType()) {
                             case "Car Mechanic":
@@ -391,13 +402,13 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id){
-            case R.id.confirm:{
-                if(!helpers.isConnected(Dashboard.this)){
+        switch (id) {
+            case R.id.confirm: {
+                if (!helpers.isConnected(Dashboard.this)) {
                     helpers.showNoInternetError(Dashboard.this);
                     return;
                 }
-                if (selecttype.getSelectedItemPosition() == 0){
+                if (selecttype.getSelectedItemPosition() == 0) {
                     helpers.showError(Dashboard.this, "Select your type first");
                     return;
                 }
@@ -437,5 +448,76 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 break;
             }
         }
+    }
+
+    private void listenToNotifications() {
+        reference.orderByChild("userId").equalTo(user.getPhone()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        Notification n = data.getValue(Notification.class);
+                        if (n != null && !n.isRead()) {
+                            showNotificationsDialog(n);
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    private void showNotificationsDialog(final Notification notification) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(Dashboard.this, "1");
+        builder.setTicker("New Notification");
+        builder.setAutoCancel(true);
+        builder.setChannelId("1");
+        builder.setContentInfo("New Notification ");
+        builder.setContentTitle("New Notification ");
+        builder.setContentText(notification.getMessage());
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+        builder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+        builder.build();
+        Intent notificationIntent = new Intent(Dashboard.this,BookingDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Notification", notification);
+        notificationIntent.putExtras(bundle);
+        PendingIntent conPendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(conPendingIntent);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager != null) {
+            manager.notify(10, builder.build());
+        }
+        final MaterialDialog dialog = new MaterialDialog.Builder(Dashboard.this)
+                .setTitle("NEW Notification")
+                .setMessage(notification.getMessage())
+                .setCancelable(false)
+                .setPositiveButton("DETAILS", R.drawable.ic_okay, new MaterialDialog.OnClickListener() {
+                    @Override
+                    public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
+                        dialogInterface.dismiss();
+                        Intent it = new Intent(Dashboard.this, BookingDetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Notification",notification);
+                        it.putExtras(bundle);
+                        startActivity(it);
+                    }
+                })
+                .setNegativeButton("CLOSE", R.drawable.ic_close, new MaterialDialog.OnClickListener() {
+                    @Override
+                    public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .build();
+        // Show Dialog
+        dialog.show();
+
     }
 }

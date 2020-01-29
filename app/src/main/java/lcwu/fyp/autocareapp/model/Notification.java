@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 public class Notification implements Serializable {
     private String id,userId,providerId,bookingId,message,date;
+    private boolean read;
+    public Notification() {
+    }
 
     public String getId() {
         return id;
@@ -53,15 +56,22 @@ public class Notification implements Serializable {
         this.date = date;
     }
 
-    public Notification(String id, String userId, String providerId, String bookingId, String message, String date) {
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public Notification(String id, String userId, String providerId, String bookingId, String message, String date, boolean read) {
         this.id = id;
         this.userId = userId;
         this.providerId = providerId;
         this.bookingId = bookingId;
         this.message = message;
         this.date = date;
+        this.read = read;
     }
 
-    public Notification() {
-    }
 }
