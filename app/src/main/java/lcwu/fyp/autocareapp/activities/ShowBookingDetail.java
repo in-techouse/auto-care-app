@@ -147,7 +147,6 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
                     customer = dataSnapshot.getValue(User.class);
                     if (customer!=null){
                         UserName.setText(customer.getFirstName()+" "+customer.getLastName());
-
                     }
                     else{
                         UserName.setText("customer is null");
@@ -163,10 +162,6 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
 
             }
         });
-
-
-
-
     }
 
     private boolean askForPermission(){
