@@ -46,12 +46,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
 import lcwu.fyp.autocareapp.director.Session;
 import lcwu.fyp.autocareapp.model.Booking;
+import lcwu.fyp.autocareapp.model.Notification;
 import lcwu.fyp.autocareapp.model.User;
 
 public class ShowBookingDetail extends AppCompatActivity implements View.OnClickListener{
@@ -68,7 +72,8 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
     private LinearLayout progress,buttons;
     private ImageView userImage;
     private DatabaseReference refrence = FirebaseDatabase.getInstance().getReference();
-
+    private ValueEventListener listener;
+    private boolean isFirst = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -330,45 +335,50 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
             case R.id.ACCEPT:{
                 buttons.setVisibility(View.GONE);
                 progress.setVisibility(View.VISIBLE);
-                refrence.child("Bookings").child(booking.getId()).addValueEventListener(new ValueEventListener() {
+                listener = refrence.child("Bookings").child(booking.getId()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.getValue()!=null)
-                        {
-                            Booking temp=dataSnapshot.getValue(Booking.class);
-                            if(temp !=null)
-                            {
-                                if (temp.getProviderId() == null || temp.getProviderId().equals(""))
-                                {
-                                    temp.setProviderId(user.getId());
-                                    temp.setStatus("In Progress");
-                                    acceptBooking(temp);
-                                }
-                                else
-                                {
+                        refrence.removeEventListener(listener);
+                        if(isFirst) {
+                            isFirst = false;
+                            if (dataSnapshot.getValue() != null) {
+                                Booking temp = dataSnapshot.getValue(Booking.class);
+                                if (temp != null) {
+                                    if (temp.getProviderId() == null || temp.getProviderId().equals("")) {
+                                        temp.setProviderId(user.getPhone());
+                                        temp.setStatus("In Progress");
+                                        if (user_address.getText() != null)
+                                            temp.setAddres(user_address.getText().toString());
+                                        else
+                                            temp.setAddres("");
+                                        acceptBooking(temp);
+                                    } else {
+                                        buttons.setVisibility(View.VISIBLE);
+                                        progress.setVisibility(View.GONE);
+                                        helpers.showError(ShowBookingDetail.this, "THE BOOKING HAS BEEN ACCEPTED BY ANOTHER PROVIDER");
+                                    }
+                                } else {
                                     buttons.setVisibility(View.VISIBLE);
                                     progress.setVisibility(View.GONE);
-                                    helpers.showError(ShowBookingDetail.this, "THE BOOKING HAS BEEN ACCEPTED BY ANOTHER PROVIDER");
+                                    helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG);
                                 }
-                            }
-                            else {
+                            } else {
                                 buttons.setVisibility(View.VISIBLE);
                                 progress.setVisibility(View.GONE);
                                 helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG);
                             }
                         }
-                        else{
-                            buttons.setVisibility(View.VISIBLE);
-                            progress.setVisibility(View.GONE);
-                            helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG);
-                        }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        buttons.setVisibility(View.VISIBLE);
-                        progress.setVisibility(View.GONE);
-                        helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+                        if (isFirst) {
+                            isFirst = false;
+                            refrence.removeEventListener(listener);
+                            buttons.setVisibility(View.VISIBLE);
+                            progress.setVisibility(View.GONE);
+                            helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+                        }
                     }
                 });
 
@@ -380,12 +390,52 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
             }
         }
     }
-    private void acceptBooking(Booking b)
+    private void acceptBooking(final Booking b)
     {
+        Log.e("Booking", "Id: " + b.getId());
+        Log.e("Booking", "Provider Id: " + b.getProviderId());
+        Log.e("Booking", "Address: " + b.getAddres());
+        Log.e("Booking", "Date: " + b.getDate());
+        Log.e("Booking", "Status: " + b.getStatus());
+        Log.e("Booking", "Type : " + b.getType());
+        Log.e("Booking", "Latitude: " + b.getLatitude());
+        Log.e("Booking", "Longitude: " + b.getLongitude());
+        Log.e("Booking", "User id: " + b.getUserId());
+
         refrence.child("Bookings").child(b.getId()).setValue(b).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                sendNotification(b);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                buttons.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
+                helpers.showError(ShowBookingDetail.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            }
+        });
+    }
 
+    private void sendNotification(Booking b)
+    {
+        Notification notification=new Notification();
+        String id=refrence.child("Notifications").push().getKey();
+        notification.setId(id);
+        notification.setBookingId(b.getId());
+        notification.setUserId(customer.getPhone());
+        notification.setProviderId(user.getPhone());
+        notification.setRead(false);
+        Date d = new Date();
+        String date = new SimpleDateFormat("EEE DD, MMM, yyyy HH:mm").format(d);
+        notification.setDate(date);
+        notification.setMessage("Your booking has been accepted by " + user.getFirstName() + " " + user.getLastName());
+        refrence.child("Notifications").child(notification.getId()).setValue(notification).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                buttons.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
+                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
