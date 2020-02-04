@@ -1,5 +1,8 @@
 package lcwu.fyp.autocareapp.adapters;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,18 +10,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import lcwu.fyp.autocareapp.R;
+import lcwu.fyp.autocareapp.activities.BookingActivity;
 import lcwu.fyp.autocareapp.model.Notification;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationHolder>
 {
-    private List<Notification> Data;
+    private List <Notification> Data;
+    private Context context;
 
-    public NotificationAdapter() {
+    public NotificationAdapter(Context c) {
         Data = new ArrayList<>();
+        context = c;
     }
 
     public void setData(List<Notification> data) {
@@ -42,6 +49,23 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             Log.e("Notification", "Message" + n.getMessage());
             holder.date.setText(n.getDate());
             holder.message.setText(n.getMessage());
+            holder.mainCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent it = new Intent(context, BookingActivity.class);
+                    it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Bundle b = new Bundle();
+                    b.putSerializable("notification", n);
+                    it.putExtras(b);
+
+
+
+                    context.startActivity(it);
+
+
+                }
+            });
         }
         else{
             Log.e("Notification", "Notification obj is null");
@@ -59,11 +83,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     {
         TextView date;
         TextView message;
+        CardView mainCard;
 
         public NotificationHolder(@NonNull View itemView) {
             super(itemView);
             date = itemView.findViewById(R.id.Date);
             message = itemView.findViewById(R.id.message);
+            mainCard = itemView.findViewById(R.id.mainCard);
+
         }
     }
 }
