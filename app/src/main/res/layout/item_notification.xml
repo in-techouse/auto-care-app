@@ -41,6 +41,14 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/message"
+            android:layout_margin="7dp"
+            />
+
+
 
     </LinearLayout>
 

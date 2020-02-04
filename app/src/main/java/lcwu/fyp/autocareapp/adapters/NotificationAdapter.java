@@ -37,6 +37,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         final Notification n = Data.get(position);
         holder.date.setText(n.getDate());
+        holder.message.setText(n.getMessage());
     }
 
     @Override
@@ -47,10 +48,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     class NotificationHolder extends RecyclerView.ViewHolder
     {
         TextView date;
+        TextView message;
 
         public NotificationHolder(@NonNull View itemView) {
             super(itemView);
             date = itemView.findViewById(R.id.Date);
+            message = itemView.findViewById(R.id.textView_message);
         }
     }
 }
