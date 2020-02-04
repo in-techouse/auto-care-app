@@ -1,5 +1,6 @@
 package lcwu.fyp.autocareapp.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,10 +36,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull NotificationHolder holder, int position) {
-
         final Notification n = Data.get(position);
-        holder.date.setText(n.getDate());
-        holder.message.setText(n.getMessage());
+        if(n != null){
+            Log.e("Notification", "Date" + n.getDate());
+            Log.e("Notification", "Message" + n.getMessage());
+            holder.date.setText(n.getDate());
+            holder.message.setText(n.getMessage());
+        }
+        else{
+            Log.e("Notification", "Notification obj is null");
+        }
 
     }
 
@@ -56,7 +63,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         public NotificationHolder(@NonNull View itemView) {
             super(itemView);
             date = itemView.findViewById(R.id.Date);
-            message = itemView.findViewById(R.id.textView_message);
+            message = itemView.findViewById(R.id.message);
         }
     }
 }
