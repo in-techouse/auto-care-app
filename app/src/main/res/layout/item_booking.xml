@@ -6,7 +6,8 @@
     app:cardElevation="@dimen/mp12"
     android:layout_margin="@dimen/mp10"
     android:padding="@dimen/mp5"
-    app:cardCornerRadius="@dimen/mp12">
+    app:cardCornerRadius="@dimen/mp12"
+    android:id="@+id/mainCard">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -46,7 +46,7 @@ public class BookingActivity extends AppCompatActivity {
         bookings = findViewById(R.id.bookings);
         session = new Session(BookingActivity.this);
         user = session.getUser();
-        bookingAdapter=new BookingAdapter();
+        bookingAdapter=new BookingAdapter(BookingActivity.this);
         bookings.setLayoutManager(new LinearLayoutManager(BookingActivity.this));
         bookings.setAdapter(bookingAdapter);
         Data = new ArrayList<>();
