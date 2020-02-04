@@ -39,7 +39,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
@@ -56,7 +55,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -284,6 +282,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
@@ -499,6 +499,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 .setPositiveButton("DETAILS", R.drawable.ic_okay, new MaterialDialog.OnClickListener() {
                     @Override
                     public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
+                        markNotificationRead(notification);
                         dialogInterface.dismiss();
                         Intent it = new Intent(Dashboard.this, BookingDetailActivity.class);
                         Bundle bundle = new Bundle();
@@ -510,12 +511,17 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 .setNegativeButton("CLOSE", R.drawable.ic_close, new MaterialDialog.OnClickListener() {
                     @Override
                     public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
+                        markNotificationRead(notification);
                         dialogInterface.dismiss();
                     }
                 })
                 .build();
         // Show Dialog
         dialog.show();
+    }
 
+    private void markNotificationRead(Notification notification){
+        notification.setRead(true);
+        notificationRefrence.child(notification.getId()).setValue(notification);
     }
 }
