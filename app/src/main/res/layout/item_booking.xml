@@ -59,6 +59,47 @@
                 android:id="@+id/type"
                 android:gravity="end"/>
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_margin="@dimen/mp7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:textStyle="bold"
+                android:text="Status"
+                android:textAlignment="gravity"
+                android:gravity="start"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:textAlignment="gravity"
+                android:id="@+id/status"
+                android:gravity="end"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="@dimen/mp7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Address"
+                android:textAlignment="gravity"
+                android:gravity="start"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="gravity"
+                android:id="@+id/address"
+                android:gravity="end"/>
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

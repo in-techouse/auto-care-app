@@ -48,6 +48,9 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingH
         final Booking b = Data.get(position);
         holder.date.setText(b.getDate());
         holder.type.setText(b.getType());
+        holder.status.setText(b.getStatus());
+        holder.address.setText(b.getAddres());
+
         holder.mainCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,7 +73,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingH
     }
 
     class BookingHolder extends RecyclerView.ViewHolder {
-        TextView date,type;
+        TextView date,type, status,address;
         CardView mainCard;
 
         public BookingHolder(@NonNull View itemView) {
@@ -78,6 +81,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingH
             date=itemView.findViewById(R.id.date);
             type=itemView.findViewById(R.id.type);
             mainCard=itemView.findViewById(R.id.mainCard);
+            status=itemView.findViewById(R.id.status);
+            address=itemView.findViewById(R.id.address);
         }
     }
 }
