@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.activities.BookingActivity;
+import lcwu.fyp.autocareapp.activities.BookingDetailActivity;
 import lcwu.fyp.autocareapp.model.Booking;
 
 public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingHolder> {
@@ -49,7 +51,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingH
         holder.mainCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent it=new Intent(context, BookingActivity.class);
+                Intent it=new Intent(context, BookingDetailActivity.class);
                 it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Bundle d=new Bundle();
                 d.putSerializable("booking", b);
@@ -68,7 +70,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingH
     }
 
     class BookingHolder extends RecyclerView.ViewHolder {
-        TextView date,type,mainCard;
+        TextView date,type;
+        CardView mainCard;
 
         public BookingHolder(@NonNull View itemView) {
             super(itemView);

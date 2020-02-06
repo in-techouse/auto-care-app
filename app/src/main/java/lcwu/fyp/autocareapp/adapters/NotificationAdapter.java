@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.activities.BookingActivity;
+import lcwu.fyp.autocareapp.activities.BookingDetailActivity;
 import lcwu.fyp.autocareapp.model.Notification;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationHolder>
@@ -53,7 +54,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onClick(View v) {
 
-                    Intent it = new Intent(context, BookingActivity.class);
+                    Intent it = new Intent(context, BookingDetailActivity.class);
                     it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     Bundle b = new Bundle();
                     b.putSerializable("notification", n);
