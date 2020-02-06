@@ -63,7 +63,6 @@ import lcwu.fyp.autocareapp.model.User;
 public class BookingDetailActivity extends AppCompatActivity implements View.OnClickListener {
     private Booking booking;
     private TextView UserName,user_address,travel, YourAddress;
-    private Button reject,accept;
     private MapView map;
     private GoogleMap googleMap;
     private Marker userMarker, providerMarker;
@@ -71,11 +70,8 @@ public class BookingDetailActivity extends AppCompatActivity implements View.OnC
     private Helpers helpers;
     private Session session;
     private User user, customer;
-    private LinearLayout progress,buttons;
     private ImageView userImage;
-    private DatabaseReference refrence = FirebaseDatabase.getInstance().getReference();
-    private ValueEventListener listener;
-    private boolean isFirst = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,21 +100,13 @@ public class BookingDetailActivity extends AppCompatActivity implements View.OnC
             finish();
             return;
         }
-        progress = findViewById(R.id.progress);
-        buttons = findViewById(R.id.buttons);
-        buttons.setVisibility(View.GONE);
-        progress.setVisibility(View.VISIBLE);
 
         UserName = findViewById(R.id.userName);
         userImage = findViewById(R.id.userImage);
         user_address = findViewById(R.id.address);
-        reject = findViewById(R.id.REJECT);
-        accept = findViewById(R.id.ACCEPT);
         map = findViewById(R.id.map);
         travel = findViewById(R.id.Travel);
         YourAddress = findViewById(R.id.your_address);
-        accept.setOnClickListener(this);
-        reject.setOnClickListener(this);
 
         session = new Session(BookingDetailActivity.this);
         user = session.getUser();
@@ -163,31 +151,21 @@ public class BookingDetailActivity extends AppCompatActivity implements View.OnC
                     customer = dataSnapshot.getValue(User.class);
                     if (customer!=null){
                         UserName.setText(customer.getFirstName()+" "+customer.getLastName());
-                        buttons.setVisibility(View.VISIBLE);
-                        progress.setVisibility(View.GONE);
                         if(customer.getImage() != null && user.getImage().length() > 0){
                             Glide.with(BookingDetailActivity.this).load(customer.getImage()).into(userImage);
                         }
                     }
                     else{
                         UserName.setText("");
-                        buttons.setVisibility(View.VISIBLE);
-                        progress.setVisibility(View.GONE);
-
                     }
                 }
                 else{
                     UserName.setText("");
-                    buttons.setVisibility(View.VISIBLE);
-                    progress.setVisibility(View.GONE);
-
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                buttons.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);
             }
         });
     }
@@ -351,118 +329,6 @@ public class BookingDetailActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         int id = v.getId();
         switch (id){
-            case R.id.ACCEPT:{
-                buttons.setVisibility(View.GONE);
-                progress.setVisibility(View.VISIBLE);
-                listener = refrence.child("Bookings").child(booking.getId()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        refrence.removeEventListener(listener);
-                        if(isFirst) {
-                            isFirst = false;
-                            if (dataSnapshot.getValue() != null) {
-                                Booking temp = dataSnapshot.getValue(Booking.class);
-                                if (temp != null) {
-                                    if (temp.getProviderId() == null || temp.getProviderId().equals("")) {
-                                        temp.setProviderId(user.getPhone());
-                                        temp.setStatus("In Progress");
-                                        if (user_address.getText() != null)
-                                            temp.setAddres(user_address.getText().toString());
-                                        else
-                                            temp.setAddres("");
-                                        acceptBooking(temp);
-                                    } else {
-                                        buttons.setVisibility(View.VISIBLE);
-                                        progress.setVisibility(View.GONE);
-                                        helpers.showError(BookingDetailActivity.this, "THE BOOKING HAS BEEN ACCEPTED BY ANOTHER PROVIDER");
-                                    }
-                                } else {
-                                    buttons.setVisibility(View.VISIBLE);
-                                    progress.setVisibility(View.GONE);
-                                    helpers.showError(BookingDetailActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
-                                }
-                            } else {
-                                buttons.setVisibility(View.VISIBLE);
-                                progress.setVisibility(View.GONE);
-                                helpers.showError(BookingDetailActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        if (isFirst) {
-                            isFirst = false;
-                            refrence.removeEventListener(listener);
-                            buttons.setVisibility(View.VISIBLE);
-                            progress.setVisibility(View.GONE);
-                            helpers.showError(BookingDetailActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
-                        }
-                    }
-                });
-
-                break;
-            }
-            case R.id.REJECT:{
-                finish();
-                break;
-            }
         }
     }
-    private void acceptBooking(final Booking b)
-    {
-        Log.e("Booking", "Id: " + b.getId());
-        Log.e("Booking", "Provider Id: " + b.getProviderId());
-        Log.e("Booking", "Address: " + b.getAddres());
-        Log.e("Booking", "Date: " + b.getDate());
-        Log.e("Booking", "Status: " + b.getStatus());
-        Log.e("Booking", "Type : " + b.getType());
-        Log.e("Booking", "Latitude: " + b.getLatitude());
-        Log.e("Booking", "Longitude: " + b.getLongitude());
-        Log.e("Booking", "User id: " + b.getUserId());
-
-        refrence.child("Bookings").child(b.getId()).setValue(b).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                sendNotification(b);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                buttons.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);
-                helpers.showError(BookingDetailActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
-            }
-        });
-    }
-
-    private void sendNotification(Booking b)
-    {
-        Notification notification=new Notification();
-        String id=refrence.child("Notifications").push().getKey();
-        notification.setId(id);
-        notification.setBookingId(b.getId());
-        notification.setUserId(customer.getPhone());
-        notification.setProviderId(user.getPhone());
-        notification.setRead(false);
-        Date d = new Date();
-        String date = new SimpleDateFormat("EEE DD, MMM, yyyy HH:mm").format(d);
-        notification.setDate(date);
-        notification.setMessage("Your booking has been accepted by " + user.getFirstName() + " " + user.getLastName());
-        refrence.child("Notifications").child(notification.getId()).setValue(notification).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                buttons.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);
-                finish();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                buttons.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);
-                helpers.showError(BookingDetailActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
-            }
-        });
-    }
-}
+   }

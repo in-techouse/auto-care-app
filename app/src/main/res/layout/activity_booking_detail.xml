@@ -117,43 +117,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/Travel"
                     android:layout_alignParentEnd="true" />
-
             </RelativeLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/progress"
-                android:orientation="vertical">
-                <ProgressBar
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/buttons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-                <Button
-                    android:layout_margin="@dimen/mp3"
-                    android:background="@color/colorReject"
-                    android:textColor="@color/colorTextWhite"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/REJECT"
-                    android:text="@string/reject"/>
-                <Button
-                    android:layout_margin="@dimen/mp3"
-                    android:background="@color/colorAccept"
-                    android:textColor="@color/colorTextWhite"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/ACCEPT"
-                    android:text="@string/accept"/>
-            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
