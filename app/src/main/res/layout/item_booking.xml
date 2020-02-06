@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="gravity"
                 android:id="@+id/address"
-                android:gravity="end"/>
+                android:gravity="start"/>
         </LinearLayout>
     </LinearLayout>
 

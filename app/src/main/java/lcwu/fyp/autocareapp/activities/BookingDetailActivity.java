@@ -97,7 +97,7 @@ public class BookingDetailActivity extends AppCompatActivity implements View.OnC
             return;
         }
 
-        booking = (Booking) b.getSerializable("Booking");
+        booking = (Booking) b.getSerializable("booking");
         if (booking==null)
         {
             Log.e("BookingDetail", "Booking is NULL");
