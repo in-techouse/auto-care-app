@@ -49,7 +49,7 @@ public class NotificationActivity extends AppCompatActivity {
         session = new Session(NotificationActivity.this);
         user = session.getUser();
         Data = new ArrayList<>();
-        notificationAdapter = new NotificationAdapter();
+        notificationAdapter = new NotificationAdapter(NotificationActivity.this);
         notifications.setLayoutManager(new LinearLayoutManager(NotificationActivity.this));
         notifications.setAdapter(notificationAdapter);
 

@@ -36,7 +36,7 @@ public class Session {
 
             String value = preferences.getString("user", "*");
 
-            if(value == null || value.equals("*")){
+            if(value.equals("*")){
                 user = null;
             }
             else{
