@@ -19,7 +19,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,10 +44,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import de.hdodenhof.circleimageview.CircleImageView;
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.director.Helpers;
@@ -69,7 +68,7 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
     private Session session;
     private User user, customer;
     private LinearLayout progress,buttons;
-    private ImageView userImage;
+    private CircleImageView userImage;
     private DatabaseReference refrence = FirebaseDatabase.getInstance().getReference();
     private ValueEventListener listener;
     private boolean isFirst = true;
@@ -100,6 +99,7 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
             finish();
             return;
         }
+        Log.e("Booking", "Booking Id: " + booking.getId());
         progress = findViewById(R.id.progress);
         buttons = findViewById(R.id.buttons);
         buttons.setVisibility(View.GONE);
@@ -159,21 +159,23 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
                 if (dataSnapshot.getValue()!=null){
                     customer = dataSnapshot.getValue(User.class);
                     if (customer!=null){
+                        Log.e("Booking", "Customer is not Null");
                         UserName.setText(customer.getFirstName()+" "+customer.getLastName());
                         buttons.setVisibility(View.VISIBLE);
                         progress.setVisibility(View.GONE);
-                        if(customer.getImage() != null && user.getImage().length() > 0){
+                        if(customer.getImage() != null && customer.getImage().length() > 0){
                             Glide.with(ShowBookingDetail.this).load(customer.getImage()).into(userImage);
                         }
                     }
                     else{
+                        Log.e("Booking", "Customer is Null");
                         UserName.setText("");
                         buttons.setVisibility(View.VISIBLE);
                         progress.setVisibility(View.GONE);
-
                     }
                 }
                 else{
+                    Log.e("Booking", "DataSnapShot is Null");
                     UserName.setText("");
                     buttons.setVisibility(View.VISIBLE);
                     progress.setVisibility(View.GONE);
@@ -400,7 +402,6 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
         Log.e("Booking", "Latitude: " + b.getLatitude());
         Log.e("Booking", "Longitude: " + b.getLongitude());
         Log.e("Booking", "User id: " + b.getUserId());
-
         refrence.child("Bookings").child(b.getId()).setValue(b).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {

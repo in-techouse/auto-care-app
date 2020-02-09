@@ -339,7 +339,7 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot data:dataSnapshot.getChildren()){
                     Booking b = data.getValue(Booking.class);
-                    if(b!=null && b.getProviderId()!=null && b.getProviderId().length()<1 && b.getType().equals(user.getType()))
+                    if(b!=null && b.getProviderId()!=null && b.getProviderId().length()<1 && b.getType().equals(user.getType()) && b.getStatus().equals("New"))
                     {
                         showBookingDialog(b);
                         break;

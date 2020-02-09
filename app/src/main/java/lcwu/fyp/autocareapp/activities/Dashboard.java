@@ -515,11 +515,11 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                     @Override
                     public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
                         dialogInterface.dismiss();
-                        Intent it = new Intent(Dashboard.this, BookingDetailActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("Notification",notification);
-                        it.putExtras(bundle);
-                        startActivity(it);
+//                        Intent it = new Intent(Dashboard.this, BookingDetailActivity.class);
+//                        Bundle bundle = new Bundle();
+//                        bundle.putSerializable("Notification",notification);
+//                        it.putExtras(bundle);
+//                        startActivity(it);
                     }
                 })
                 .setNegativeButton("CLOSE", R.drawable.ic_close, new MaterialDialog.OnClickListener() {
@@ -531,6 +531,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 .build();
         // Show Dialog
         dialog.show();
+
+
 
     }
 }

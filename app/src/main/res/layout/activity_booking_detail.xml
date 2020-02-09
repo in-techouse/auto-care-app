@@ -37,13 +37,15 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FF000000"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_width="@dimen/mp60"
                     android:layout_height="@dimen/mp60"
                     android:src="@drawable/user"
-                    android:id="@+id/userImage"/>
+                    android:id="@+id/userImage" />
                 <TextView
                     android:id="@+id/userNameLabel"
                     android:layout_toEndOf="@id/userImage"
