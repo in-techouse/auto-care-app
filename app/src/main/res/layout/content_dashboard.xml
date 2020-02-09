@@ -51,6 +51,7 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/conformCard"
         android:layout_alignParentBottom="true"
         android:background="@color/colorTextWhite"
         android:layout_width="match_parent"

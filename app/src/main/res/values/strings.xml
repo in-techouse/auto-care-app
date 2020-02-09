@@ -151,4 +151,9 @@
     <string name="loading_bookings">Loading Bookings</string>
     <string name="booking_details">Booking Detail</string>
     <string name="connecting_you_to_nearby_drivers">Connecting you to nearby drivers</string>
+
+    <string name="bottom_sheet_option_camera">Use Camera</string>
+    <string name="bottom_sheet_option_gallery">Upload from Gallery</string>
+    <string name="bottom_sheet_option_heading">Add Photo</string>
+    <string name="bottom_sheet_option_remove_photo">Remove Photo</string>
 </resources>

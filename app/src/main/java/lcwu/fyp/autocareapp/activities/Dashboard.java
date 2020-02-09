@@ -40,6 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
 
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
@@ -89,8 +90,12 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private CheckBox showmechanics, showpetrolpumps;
     private Button confirm;
     private LinearLayout searching;
+    private CardView confromCard;
     private DatabaseReference notificationRefrence = FirebaseDatabase.getInstance().getReference().child("Notifications");
 
+    public static Dashboard newInstance() {
+        return new Dashboard();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +118,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         confirm = findViewById(R.id.confirm);
         confirm.setOnClickListener(this);
         searching = findViewById(R.id.searching);
-
+        confromCard = findViewById(R.id.conformCard);
         session = new Session(Dashboard.this);
         user = session.getUser();
         helpers = new Helpers();
@@ -127,7 +132,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         profile_phone = header.findViewById(R.id.profile_phone);
 
         String name = user.getFirstName() + " " + user.getLastName();
-        profile_name.setText(name);
+//        profile_name.setText(name);
+        profile_name.setText(user.getFirstName());
         profile_email.setText(user.getEmail());
         profile_phone.setText(user.getPhone());
 
@@ -142,6 +148,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 @Override
                 public void onMapReady(GoogleMap gM) {
                     Log.e("Maps", "Call back received");
+
 
                     View locationButton = ((View) map.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
                     RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
@@ -402,6 +409,14 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         int id = v.getId();
         switch (id) {
             case R.id.confirm: {
+                //BottomSheet Code
+//                confromCard.setVisibility(View.GONE);
+//                BookingBottomSheet buttomSheet =
+//                        BookingBottomSheet.newInstance();
+//                buttomSheet.setCancelable(false);
+//                buttomSheet.show(getSupportFragmentManager(),
+//                        "add_photo_dialog_fragment");
+                //UnComment
                 if (!helpers.isConnected(Dashboard.this)) {
                     helpers.showNoInternetError(Dashboard.this);
                     return;
@@ -519,3 +534,4 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
     }
 }
+

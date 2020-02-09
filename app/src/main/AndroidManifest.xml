@@ -46,6 +46,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.Dashboard"
+            android:launchMode="singleInstance"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
@@ -72,6 +73,7 @@
             android:parentActivityName=".activities.Dashboard" />
         <activity
             android:name=".activities.ProviderDashboard"
+            android:launchMode="singleInstance"
             android:label="@string/title_activity_provider_dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

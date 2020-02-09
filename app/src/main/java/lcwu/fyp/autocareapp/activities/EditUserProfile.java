@@ -10,6 +10,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +22,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.Person;
 
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +30,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import java.io.File;
+import java.util.Calendar;
 
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
@@ -39,7 +46,7 @@ public class EditUserProfile extends AppCompatActivity implements View.OnClickLi
     private Helpers helpers;
     private Session session;
     private User user;
-    private String imagePath;
+    private Uri imagePath;
     private boolean isImage;
     private EditText edtPhoneNo, edtFirstName, edtLastName, edtEmail;
     private String strPhoneNo, strFirstName, strLastName, strEmail;
@@ -59,12 +66,14 @@ public class EditUserProfile extends AppCompatActivity implements View.OnClickLi
         user = session.getUser();
         helpers = new Helpers();
         img = findViewById(R.id.img);
-        if (user.getImage()== null || user.getImage().length()<1){
-            img.setImageDrawable(getResources().getDrawable(R.drawable.user));
+        if (user.getImage() != null && !user.getImage().equalsIgnoreCase("")){
+            Glide.with(EditUserProfile.this).load(user.getImage()).into(img);
+
         }
         else
         {
-            Glide.with(EditUserProfile.this).load(user.getImage()).into(img);
+            img.setImageDrawable(getResources().getDrawable(R.drawable.user));
+
         }
 
         edtPhoneNo = findViewById(R.id.edtPhoneNo);
@@ -98,15 +107,16 @@ public class EditUserProfile extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 10){
+        if(requestCode == 2){
             if (resultCode == RESULT_OK) {
                 if(data == null){
+                    Log.e("profile" , "data null");
                     return;
                 }
                 Uri image = data.getData();
                 if (image != null){
                     Glide.with(EditUserProfile.this).load(image).into(img);
-                    imagePath = image.toString();
+                    imagePath = image;
                     isImage = true;
 
                 }
@@ -139,7 +149,7 @@ public class EditUserProfile extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == 10){
+        if(requestCode == 2){
             openGallery();
         }
     }
@@ -166,35 +176,101 @@ public class EditUserProfile extends AppCompatActivity implements View.OnClickLi
                 }
                 boolean flag = isValid();
                 if(flag){
-                    userProfileProgress.setVisibility(View.VISIBLE);
-                    userProfile.setVisibility(View.GONE);
-                    user.setFirstName(strFirstName);
-                    user.setLastName(strLastName);
-                    user.setEmail(strEmail);
-                    final Session session = new Session(EditUserProfile.this);
-                    FirebaseDatabase db = FirebaseDatabase.getInstance();
-                    db.getReference().child("Users").child(strPhoneNo).setValue(user)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    userProfileProgress.setVisibility(View.GONE);
-                                    userProfile.setVisibility(View.VISIBLE);
-                                    session.setSession(user);
-                                    finish();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            userProfileProgress.setVisibility(View.GONE);
-                            userProfile.setVisibility(View.VISIBLE);
-                            helpers.showError(EditUserProfile.this, Constants.ERROR_SOMETHING_WENT_WRONG);
-                        }
-                    });
+                    Log.e("profile" , "is image value "+isImage);
+                    if(isImage){
+                        Log.e("Profile", "Image Found");
+                        uploadImage();
+                    }
+                    else{
+                        Log.e("Profile", "No Image Found");
+                        saveToDatabase();
+                    }
+
                 }
 
 
             }
         }
+    }
+
+    private void uploadImage(){
+        userProfileProgress.setVisibility(View.VISIBLE);
+        userProfile.setVisibility(View.GONE);
+        final StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Users").child(user.getPhone());
+        Uri selectedMediaUri = Uri.parse(imagePath.toString());
+
+        File file = new File(selectedMediaUri.getPath());
+        Log.e("file" , "in file object value "+file.toString());
+        Log.e("Profile", "Uri: " + selectedMediaUri.getPath() + " File: " + file.exists());
+
+        Calendar calendar = Calendar.getInstance();
+
+        Log.e("profile" , "selected Path "+imagePath.toString());
+        storageReference.child(calendar.getTimeInMillis()+"").putFile(imagePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.e("Profile" , "in OnSuccess "+uri.toString());
+                        user.setImage(uri.toString());
+                        userProfileProgress.setVisibility(View.GONE);
+                        userProfile.setVisibility(View.VISIBLE);
+                        saveToDatabase();
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Profile", "Download Url: " + e.getMessage());
+                        userProfileProgress.setVisibility(View.GONE);
+                        userProfile.setVisibility(View.VISIBLE);
+                        helpers.showError(EditUserProfile.this, "ERROR!Something went wrong.\n Please try again later.");
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("Profile", "Upload Image Url: " + e.getMessage());
+                userProfileProgress.setVisibility(View.GONE);
+                userProfile.setVisibility(View.VISIBLE);
+                helpers.showError(EditUserProfile.this, "ERROR! Something went wrong.\n Please try again later.");            }
+        });
+    }
+    private void saveToDatabase(){
+        userProfileProgress.setVisibility(View.VISIBLE);
+        userProfile.setVisibility(View.GONE);
+        strFirstName = edtFirstName.getText().toString();
+        strLastName = edtLastName.getText().toString();
+        strPhoneNo = edtPhoneNo.getText().toString();
+        strEmail = edtEmail.getText().toString();
+        user.setFirstName(strFirstName);
+        user.setLastName(strLastName);
+        user.setEmail(strEmail);
+        final Session session = new Session(EditUserProfile.this);
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        db.getReference().child("Users").child(strPhoneNo).setValue(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        userProfileProgress.setVisibility(View.GONE);
+                        userProfile.setVisibility(View.VISIBLE);
+                        session.setSession(user);
+                        Intent intent = new Intent(EditUserProfile.this, Dashboard.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                userProfileProgress.setVisibility(View.GONE);
+                userProfile.setVisibility(View.VISIBLE);
+                helpers.showError(EditUserProfile.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            }
+        });
+
     }
 
     private boolean isValid() {
