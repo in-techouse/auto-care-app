@@ -38,6 +38,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -49,6 +52,10 @@ import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.List;
@@ -60,7 +67,7 @@ import lcwu.fyp.autocareapp.director.Constants;
 import lcwu.fyp.autocareapp.model.Booking;
 import lcwu.fyp.autocareapp.model.User;
 
-public class ProviderDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ProviderDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
     private DatabaseReference booking_reference = FirebaseDatabase.getInstance().getReference().child("Bookings");
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
     private MapView map;
@@ -75,13 +82,43 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
     private FusedLocationProviderClient locationProviderClient;
     private Marker marker;
     private TextView locationAddress;
+    LinearLayout layoutBottomSheet;
+    BottomSheetBehavior sheetbehavoior;
+    ProgressBar sheetprogress;
+    RelativeLayout mainsheet;
+    Booking activeBooking;
+    User activecustomer;
+    TextView profileName,profileEmail,profilePhone,providerName,providerCategory,bookingAddress,bookingDate;
+    CircleImageView providerImage;
+    Button cancelBooking,completeBooking;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_dashboard);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
+        layoutBottomSheet = findViewById(R.id.bottom_sheet);
+        sheetbehavoior=BottomSheetBehavior.from(layoutBottomSheet);
+        sheetbehavoior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        sheetprogress=findViewById(R.id.sheetProgress);
+        mainsheet=findViewById(R.id.mainSheet);
+        providerImage=findViewById(R.id.providerImage);
+        providerName=findViewById(R.id.providerName);
+        providerCategory=findViewById(R.id.providerCategory);
+        bookingAddress=findViewById(R.id.bookingAddress);
+        bookingDate=findViewById(R.id.bookingDate);
+        cancelBooking=findViewById(R.id.cancelBooking);
+        completeBooking=findViewById(R.id.mark_complete);
+
+
+
+
+        cancelBooking.setOnClickListener(this);
+        completeBooking.setOnClickListener(this);
+
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -402,5 +439,20 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
                 .build();
         // Show Dialog
         dialog.show();
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        int id= view.getId();
+        switch(id)
+        {
+            case R.id.cancelBooking:{
+                break;
+            }
+            case R.id.mark_complete:{
+                break;
+            }
+        }
     }
 }

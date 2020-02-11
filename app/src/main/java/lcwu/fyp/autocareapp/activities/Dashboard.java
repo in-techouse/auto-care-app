@@ -26,6 +26,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -504,12 +505,17 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                         sheetProgress.setVisibility(View.GONE);
                         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                         confromCard.setVisibility(View.VISIBLE);
+                        getOnProviders();
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e("Booking" , "Cancellation Failed");
+                        helpers.showError(Dashboard.this,"something went wrong while cancelling the booking,plz try later");
+                        sheetProgress.setVisibility(View.GONE);
+                        mainSheet.setVisibility(View.VISIBLE);
+
                     }
                 });
 
@@ -517,7 +523,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
         }
     }
-
     private void listenToNotifications() {
         notificationRefrence.orderByChild("userId").equalTo(user.getPhone()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -596,11 +601,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         bookingReference.child(notification.getBookingId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                fullName = dataSnapshot.getValue(User.class).getFullName();
                 Log.e("snapshot" , "noti snapshot "+dataSnapshot.toString());
                 activeBooking = dataSnapshot.getValue(Booking.class);
                 if(activeBooking != null){
-                    activeBooking.getProviderId();
                     userReference.child(activeBooking.getProviderId()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
