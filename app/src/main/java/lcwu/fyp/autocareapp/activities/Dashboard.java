@@ -15,6 +15,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,6 +33,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -53,7 +57,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -62,6 +68,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.security.auth.login.LoginException;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.director.Constants;
@@ -71,9 +80,13 @@ import lcwu.fyp.autocareapp.model.Booking;
 import lcwu.fyp.autocareapp.model.Notification;
 import lcwu.fyp.autocareapp.model.User;
 
+import static lcwu.fyp.autocareapp.R.drawable.userprofile;
+
 public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private List<User> users;
-    private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
+    private DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users");
+    private DatabaseReference bookingReference = FirebaseDatabase.getInstance().getReference().child("Bookings");
+    private ValueEventListener providerValueListener;
     private MapView map;
     private Helpers helpers;
     private Session session;
@@ -82,26 +95,49 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     private NavigationView navigationView;
     private User user;
     private CircleImageView profile_image;
-    private TextView profile_name, profile_email, profile_phone;
+    private ImageView providerImage;
+    private TextView profile_name, profile_email, profile_phone , providerName , providerCategory , bookingAddress , bookingDate;
     private FusedLocationProviderClient locationProviderClient;
     private Marker marker;
     private TextView locationAddress;
     private Spinner selecttype;
     private CheckBox showmechanics, showpetrolpumps;
-    private Button confirm;
+    private Button confirm , cancelBooking;
     private LinearLayout searching;
     private CardView confromCard;
+    private ProgressBar sheetProgress;
+    private RelativeLayout mainSheet;
+    private Booking activeBooking;
+    private User activeProvider;
     private DatabaseReference notificationRefrence = FirebaseDatabase.getInstance().getReference().child("Notifications");
 
-    public static Dashboard newInstance() {
-        return new Dashboard();
-    }
+
+    LinearLayout layoutBottomSheet;
+
+    BottomSheetBehavior sheetBehavior;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+//        ButterKnife.bind(this);
+        layoutBottomSheet = findViewById(R.id.bottom_sheet);
+//        layoutBottomSheet.addView(progressbar);
+        sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
+        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        sheetProgress = findViewById(R.id.sheetProgress);
+        mainSheet = findViewById(R.id.mainSheet);
+        providerImage = findViewById(R.id.providerImage);
+        providerName = findViewById(R.id.providerName);
+        providerCategory = findViewById(R.id.providerCategory);
+        bookingAddress = findViewById(R.id.bookingAddress);
+        bookingDate = findViewById(R.id.bookingDate);
+        cancelBooking = findViewById(R.id.cancelBooking);
+        cancelBooking.setOnClickListener(this);
+
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -199,6 +235,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             });
             getDeviceLocation();
             getOnProviders();
+            listenToNotifications();
         }
     }
 
@@ -278,7 +315,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         } catch (Exception e) {
             helpers.showError(Dashboard.this, Constants.ERROR_SOMETHING_WENT_WRONG);
         }
-        listenToNotifications();
     }
 
     @Override
@@ -364,16 +400,16 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         user.setLatidue(lat);
         user.setLongitude(lng);
         session.setSession(user);
-        reference.child(user.getPhone()).setValue(user);
+        userReference.child(user.getPhone()).setValue(user);
     }
 
     private void getOnProviders() {
-        reference.orderByChild("roll").equalTo(1).addValueEventListener(new ValueEventListener() {
+        providerValueListener = userReference.orderByChild("roll").equalTo(1).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     User u = data.getValue(User.class);
-                    if (u != null) {
+                    if (u != null && activeBooking != null) {
                         LatLng user_location = new LatLng(u.getLatidue(), u.getLongitude());
                         MarkerOptions markerOptions = new MarkerOptions().position(user_location).title(u.getType());
                         switch (u.getType()) {
@@ -409,14 +445,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         int id = v.getId();
         switch (id) {
             case R.id.confirm: {
-                //BottomSheet Code
-//                confromCard.setVisibility(View.GONE);
-//                BookingBottomSheet buttomSheet =
-//                        BookingBottomSheet.newInstance();
-//                buttomSheet.setCancelable(false);
-//                buttomSheet.show(getSupportFragmentManager(),
-//                        "add_photo_dialog_fragment");
-                //UnComment
+
                 if (!helpers.isConnected(Dashboard.this)) {
                     helpers.showNoInternetError(Dashboard.this);
                     return;
@@ -460,6 +489,32 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 });
                 break;
             }
+            case R.id.cancelBooking: {
+                Log.e("cancel" , "button clicked");
+                mainSheet.setVisibility(View.GONE);
+                sheetBehavior.setPeekHeight(120);
+                sheetProgress.setVisibility(View.VISIBLE);
+                activeBooking.setStatus("Cancelled");
+                bookingReference.child(activeBooking.getId()).child("status").setValue(activeBooking.getStatus()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Log.e("Booking" , "Cancelled");
+                        sheetBehavior.setHideable(true);
+                        sheetProgress.setVisibility(View.GONE);
+                        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        confromCard.setVisibility(View.VISIBLE);
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Booking" , "Cancellation Failed");
+                    }
+                });
+
+                break;
+            }
         }
     }
 
@@ -490,8 +545,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         builder.setTicker("New Notification");
         builder.setAutoCancel(true);
         builder.setChannelId("1");
-        builder.setContentInfo("New Notification ");
-        builder.setContentTitle("New Notification ");
+        builder.setContentInfo("New Notification");
+        builder.setContentTitle("New Notification");
         builder.setContentText(notification.getMessage());
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
@@ -531,9 +586,63 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 .build();
         // Show Dialog
         dialog.show();
+        //Show Bottom Sheet
+        confromCard.setVisibility(View.GONE);
+        userReference.removeEventListener(providerValueListener);
+//        progressBar.isShown();
+        String bId = notification.getBookingId();
+        Log.e("Notification" , "noti id "+bId);
+        sheetBehavior.setHideable(false);
+        bookingReference.child(notification.getBookingId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+//                fullName = dataSnapshot.getValue(User.class).getFullName();
+                Log.e("snapshot" , "noti snapshot "+dataSnapshot.toString());
+                activeBooking = dataSnapshot.getValue(Booking.class);
+                if(activeBooking != null){
+                    activeBooking.getProviderId();
+                    userReference.child(activeBooking.getProviderId()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                           Log.e("driver data" , "driver snapshot "+dataSnapshot.toString());
+                           activeProvider = dataSnapshot.getValue(User.class);
+                            sheetProgress.setVisibility(View.GONE);
+                            mainSheet.setVisibility(View.VISIBLE);
+                            if(activeProvider.getImage()!= null && activeProvider.getImage().length()>1){
+                                Glide.with(getApplicationContext()).load(activeProvider.getImage()).into(providerImage);
+                            }else {
+                                providerImage.setImageResource(R.drawable.userprofile);
+                            }
+                            providerCategory.setText(activeProvider.getType());
+                            providerName.setText(activeProvider.getFirstName());
+                            bookingAddress.setText(activeBooking.getAddres());
+                            bookingDate.setText(activeBooking.getDate());
+                            getDeviceLocation();
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.e("driver data" , "proder cancelled "+databaseError.toString());
+                        }
+                    });
+                }
 
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("snapshot" , "noti cancelled");
+
+            }
+        });
+//        if (sheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+//            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//        } else {
+//            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//        }
+//        BookingBottomSheet bottomSheet = new BookingBottomSheet();
+//        bottomSheet.setCancelable(false);
+//        bottomSheet.show(getSupportFragmentManager(), Dashboard.class.getSimpleName());
     }
 }
 
