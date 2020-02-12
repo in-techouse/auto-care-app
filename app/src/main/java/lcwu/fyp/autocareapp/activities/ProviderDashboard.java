@@ -505,4 +505,3 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
             }
         }
     }
-}
