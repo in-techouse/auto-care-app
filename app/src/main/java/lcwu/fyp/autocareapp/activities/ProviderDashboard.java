@@ -447,11 +447,61 @@ public class ProviderDashboard extends AppCompatActivity implements NavigationVi
         int id= view.getId();
         switch(id)
         {
-            case R.id.cancelBooking:{
+            case R.id.cancelBooking: {
+                Log.e("cancel", "button clicked");
+                mainsheet.setVisibility(View.GONE);
+                sheetbehavoior.setPeekHeight(120);
+                sheetprogress.setVisibility(View.VISIBLE);
+                activeBooking.setStatus("Cancelled");
+                booking_reference.child(activeBooking.getId()).child("status").setValue(activeBooking.getStatus()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid)
+                    {
+                        Log.e("Booking" , "Cancelled");
+                        sheetbehavoior.setHideable(true);
+                        sheetprogress.setVisibility(View.GONE);
+                        sheetbehavoior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Booking" , "Cancellation Failed");
+                        helpers.showError(ProviderDashboard.this,"something went wrong while cancelling the booking,plz try later");
+                        sheetprogress.setVisibility(View.GONE);
+                        mainsheet.setVisibility(View.VISIBLE);
+
+
+                    }
+                });
                 break;
             }
             case R.id.mark_complete:{
+                Log.e("cancel", "button clicked");
+                mainsheet.setVisibility(View.GONE);
+                sheetbehavoior.setPeekHeight(120);
+                sheetprogress.setVisibility(View.VISIBLE);
+                activeBooking.setStatus("Completed");
+                booking_reference.child(activeBooking.getId()).child("status").setValue(activeBooking.getStatus()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid)
+                    {
+                        Log.e("Booking" , "Completed");
+                        sheetbehavoior.setHideable(true);
+                        sheetprogress.setVisibility(View.GONE);
+                        sheetbehavoior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Booking" , "Complete");
+                        sheetprogress.setVisibility(View.GONE);
+                        mainsheet.setVisibility(View.VISIBLE);
+
+
+                    }
+                });
                 break;
+            }
             }
         }
     }
