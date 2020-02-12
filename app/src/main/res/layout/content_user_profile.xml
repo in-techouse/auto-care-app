@@ -16,6 +16,8 @@
         android:padding="@dimen/mp16">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:padding="@dimen/mp7"
+            android:layout_margin="@dimen/mp7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
@@ -24,12 +26,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"
-                android:padding="@dimen/mp12"
-                android:layout_margin="@dimen/mp12"
                 android:hint="@string/phone_no"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:padding="@dimen/mp7"
+            android:layout_margin="@dimen/mp7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
@@ -38,12 +40,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"
-                android:padding="@dimen/mp12"
-                android:layout_margin="@dimen/mp12"
                 android:hint="@string/first_name"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:padding="@dimen/mp7"
+            android:layout_margin="@dimen/mp7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
@@ -52,22 +54,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"
-                android:padding="@dimen/mp12"
-                android:layout_margin="@dimen/mp12"
                 android:hint="@string/last_name"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/mp7"
+            android:layout_margin="@dimen/mp7">
             <EditText
                 android:id="@+id/edtEmail"
                 android:inputType="textEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"
-                android:padding="@dimen/mp12"
-                android:layout_margin="@dimen/mp12"
                 android:hint="@string/email"/>
         </com.google.android.material.textfield.TextInputLayout>
 

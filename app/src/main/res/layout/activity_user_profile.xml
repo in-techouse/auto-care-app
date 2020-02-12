@@ -25,7 +25,7 @@
             app:toolbarId="@+id/toolbar">
 
             <ImageView
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_bar_height" />
@@ -39,6 +39,7 @@
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <include layout="@layout/content_user_profile" />
 
