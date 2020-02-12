@@ -169,10 +169,12 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         profile_phone = header.findViewById(R.id.profile_phone);
 
         String name = user.getFirstName() + " " + user.getLastName();
-//        profile_name.setText(name);
-        profile_name.setText(user.getFirstName());
+        profile_name.setText(name);
         profile_email.setText(user.getEmail());
         profile_phone.setText(user.getPhone());
+        if(user.getImage() != null && user.getImage().length() > 1){
+            Glide.with(Dashboard.this).load(user.getImage()).into(profile_image);
+        }
 
         locationAddress = findViewById(R.id.locationAddress);
 
