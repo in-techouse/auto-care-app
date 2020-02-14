@@ -30,6 +30,7 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:id="@+id/main"
             android:background="@color/colorTextWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

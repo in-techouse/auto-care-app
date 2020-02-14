@@ -23,10 +23,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 {
     private List <Notification> Data;
     private Context context;
+    String type;
 
-    public NotificationAdapter(Context c) {
+    public NotificationAdapter(String t) {
         Data = new ArrayList<>();
-        context = c;
+        type = t;
     }
 
     public void setData(List<Notification> data) {

@@ -163,9 +163,9 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
                         UserName.setText(customer.getFirstName()+" "+customer.getLastName());
                         buttons.setVisibility(View.VISIBLE);
                         progress.setVisibility(View.GONE);
-                        if(customer.getImage() != null && customer.getImage().length() > 0){
-                            Glide.with(ShowBookingDetail.this).load(customer.getImage()).into(userImage);
-                        }
+//                        if(customer.getImage() != null && customer.getImage().length() > 0){
+//                            Glide.with(ShowBookingDetail.this).load(customer.getImage()).into(userImage);
+//                        }
                     }
                     else{
                         Log.e("Booking", "Customer is Null");
@@ -334,6 +334,7 @@ public class ShowBookingDetail extends AppCompatActivity implements View.OnClick
         int id = v.getId();
         switch (id){
             case R.id.ACCEPT:{
+
                 buttons.setVisibility(View.GONE);
                 progress.setVisibility(View.VISIBLE);
                 listener = refrence.child("Bookings").child(booking.getId()).addValueEventListener(new ValueEventListener() {

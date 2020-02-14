@@ -54,6 +54,19 @@
                 android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_toEndOf="@+id/providerImage"
+                android:id="@+id/providerEmail"
+                android:layout_height="wrap_content"
+                android:text="provider email"
+                android:textColor="#444"
+                android:textSize="15dp"
+                />
+
+
+            <TextView
+                android:layout_below="@id/providerEmail"
+                android:layout_marginStart="10dp"
+                android:layout_width="match_parent"
+                android:layout_toEndOf="@+id/providerImage"
                 android:id="@+id/providerCategory"
                 android:layout_height="wrap_content"
                 android:text="Order Details"

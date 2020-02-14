@@ -22,12 +22,13 @@ import lcwu.fyp.autocareapp.model.Booking;
 public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingHolder> {
 
     private List <Booking> Data;
+    private String type;
     private Context context;
 
-    public BookingAdapter(Context c) {
+    public BookingAdapter(String t) {
 
         Data = new ArrayList<>();
-        context=c;
+        type = t;
     }
 
     public void setData(List<Booking> data) {
@@ -51,19 +52,19 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingH
         holder.status.setText(b.getStatus());
         holder.address.setText(b.getAddres());
 
-        holder.mainCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it=new Intent(context, BookingDetailActivity.class);
-                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Bundle d=new Bundle();
-                d.putSerializable("booking", b);
-                it.putExtras(d);
-
-                context.startActivity(it);
-
-            }
-        });
+//        holder.mainCard.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent it=new Intent(context, BookingDetailActivity.class);
+//                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                Bundle d=new Bundle();
+//                d.putSerializable("booking", b);
+//                it.putExtras(d);
+//
+//                context.startActivity(it);
+//
+//            }
+//        });
 
     }
 

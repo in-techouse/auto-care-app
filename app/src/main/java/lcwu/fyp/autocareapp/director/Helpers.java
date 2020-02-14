@@ -62,6 +62,28 @@ public class Helpers {
         dialog.show();
     }
 
+    public void showSuccess(Activity activity, String message){
+        final MaterialDialog dialog = new MaterialDialog.Builder(activity)
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(Constants.MESSAGES_OKAY, R.drawable.ic_okay, new MaterialDialog.OnClickListener() {
+                    @Override
+                    public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton(Constants.MESSAGE_CLOSE, R.drawable.ic_close, new MaterialDialog.OnClickListener() {
+                    @Override
+                    public void onClick(com.shreyaspatil.MaterialDialog.interfaces.DialogInterface dialogInterface, int which) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .build();
+        // Show Dialog
+        dialog.show();
+    }
+
+
     public double distance(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1))

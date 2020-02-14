@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import lcwu.fyp.autocareapp.R;
 import lcwu.fyp.autocareapp.adapters.BookingAdapter;
+import lcwu.fyp.autocareapp.director.Helpers;
 import lcwu.fyp.autocareapp.director.Session;
 import lcwu.fyp.autocareapp.model.Booking;
 import lcwu.fyp.autocareapp.model.User;
@@ -31,9 +32,12 @@ public class BookingActivity extends AppCompatActivity {
     private RecyclerView bookings;
     private Session session;
     private User user;
-    private List <Booking> Data;
     private DatabaseReference reference= FirebaseDatabase.getInstance().getReference().child("Bookings");
     private BookingAdapter bookingAdapter;
+    private Helpers helpers;
+    private List<Booking> data;
+    private String type;
+
 
 
     @Override
@@ -41,45 +45,59 @@ public class BookingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
 
+//        notification.setLayoutManager(new LinearLayoutManager(BookingActivity.this));
+//        adapter = new BookingAdapter(user.getType());
+//        notification.setAdapter(adapter);
+//        loadBookings();
+//
         loading = findViewById(R.id.loading);
+        helpers = new Helpers();
         noBooking = findViewById(R.id.noBooking);
+        data = new ArrayList<>();
         bookings = findViewById(R.id.bookings);
         session = new Session(BookingActivity.this);
         user = session.getUser();
-        bookingAdapter=new BookingAdapter(BookingActivity.this);
+
+        if(user.getRoll() == 0){
+            type = "userId";
+        }else{
+            type = "providerId";
+        }
+        bookingAdapter = new BookingAdapter(user.getType());
         bookings.setLayoutManager(new LinearLayoutManager(BookingActivity.this));
         bookings.setAdapter(bookingAdapter);
-        Data = new ArrayList<>();
         loadBookings();
     }
 
     private void loadBookings(){
+        if (!helpers.isConnected(BookingActivity.this)){
+            helpers.showError(BookingActivity.this,"No Internet Connection.Please check your Internet Connection");
+            return;
+        }
         loading.setVisibility(View.VISIBLE);
         noBooking.setVisibility(View.GONE);
         bookings.setVisibility(View.GONE);
-        reference.orderByChild("userId").equalTo(user.getPhone()).addValueEventListener(new ValueEventListener() {
+        reference.orderByChild(type).equalTo(user.getPhone()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e("Bookings", "Data Snap Shot: " + dataSnapshot.toString());
-                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    Booking b = d.getValue(Booking.class);
-                    if (b != null) {
-                        Data.add(b);
+                for(DataSnapshot d : dataSnapshot.getChildren()){
+                    Booking booking = d.getValue(Booking.class);
+                    if (booking!=null){
+                        data.add(booking);
                     }
                 }
-                Collections.reverse(Data);
-                Log.e("Bookings", "Data List Size: " + Data.size());
-                if (Data.size() > 0) {
-                    Log.e("Bookings", "If, list visible");
+                if(data.size() > 0){
+                    Collections.reverse(data);
+                    //Resume from this
+                    bookingAdapter.setData(data);
                     bookings.setVisibility(View.VISIBLE);
                     noBooking.setVisibility(View.GONE);
-                } else {
-                    Log.e("Bookings", "Else, list invisible");
-                    noBooking.setVisibility(View.VISIBLE);
+                }
+                else {
                     bookings.setVisibility(View.GONE);
+                    noBooking.setVisibility(View.VISIBLE);
                 }
                 loading.setVisibility(View.GONE);
-                bookingAdapter.setData(Data);
             }
 
             @Override
